@@ -8,3 +8,6 @@ ve
 .settings
 .coverage
 reports
+build
+dist
+django_lti_auth.egg-info
