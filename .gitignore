@@ -1,0 +1,10 @@
+._*
+*~
+*.pyc
+ve
+\#*
+.project
+.pydevproject
+.settings
+.coverage
+reports
