@@ -1,6 +1,6 @@
 # Documentation
 
-*Note: More documentation and examples to come. This is a work in progress as code is generalized from another application. This library is not yet on pypi, but will be soon.*
+*Important: More documentation and examples to come. This is a work in progress as code is generalized from another application. This library is not yet on pypi, but will be soon.*
 
 django-lti-provider provides LTI functionality for the Django web framework. This
 work began as a port of MIT's [LTI Flask Sample](https://github.com/mitodl/mit_lti_flask_sample),
