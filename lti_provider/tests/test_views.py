@@ -2,11 +2,12 @@ from django.test.client import RequestFactory
 from django.test.testcases import TestCase
 from pylti.common import LTI_SESSION_KEY
 
-from lti_auth.lti import LTI
-from lti_auth.models import LTICourseContext
-from lti_auth.tests.factories import LTICourseContextFactory, UserFactory, \
-    CONSUMERS, generate_lti_request, BASE_LTI_PARAMS, GroupFactory
-from lti_auth.views import LTIAuthMixin, LTIRoutingView, LTICourseEnableView
+from lti_provider.lti import LTI
+from lti_provider.models import LTICourseContext
+from lti_provider.tests.factories import LTICourseContextFactory, \
+    UserFactory, CONSUMERS, generate_lti_request, BASE_LTI_PARAMS, GroupFactory
+from lti_provider.views import LTIAuthMixin, LTIRoutingView, \
+    LTICourseEnableView
 
 
 TEST_TOOL_CONFIGURATION = {

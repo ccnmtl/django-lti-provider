@@ -1,8 +1,8 @@
-django-lti-auth is a python helper that supplies lti functionality to django applications.
-The library is used by our Mediathread application (http://mediathread.info). django-lti-auth was developed at the Columbia
+django-lti-provider is a python helper that supplies lti functionality to django applications.
+The library is used by our Mediathread application (http://mediathread.info). django-lti-provider was developed at the Columbia
 Center for Learning (http://ctl.columbia.edu).
 
-django-lti-auth depends on several other free open-source software as
+django-lti-provider depends on several other free open-source software as
 dependencies, which come with other licenses (compatible with the GPL)
 specified in [ test_reqs.txt ] including Django
 (http://www.djangoproject.com/) which is BSD-licensed. 

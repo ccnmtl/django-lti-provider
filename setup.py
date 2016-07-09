@@ -26,11 +26,11 @@
 from setuptools import setup
 
 setup(
-    name="django-lti-auth",
+    name="django-lti-provider",
     version="0.1.0",
     author="Susan Dreher",
     author_email="sdreher@columbia.edu",
-    url="https://github.com/ccnmtl/django-lti-auth",
+    url="https://github.com/ccnmtl/django-lti-provider",
     description="LTI helper",
     long_description="LTI Helper",
     install_requires=[
@@ -47,6 +47,6 @@ setup(
     license="BSD",
     platforms=["any"],
     zip_safe=False,
-    packages=['lti_auth'],
+    packages=['lti_provider'],
     include_package_data=True,
     )

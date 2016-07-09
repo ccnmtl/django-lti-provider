@@ -1,8 +1,8 @@
 from django.test.testcases import TestCase
 
-from lti_auth.auth import LTIBackend
-from lti_auth.lti import LTI
-from lti_auth.tests.factories import BASE_LTI_PARAMS, UserFactory
+from lti_provider.auth import LTIBackend
+from lti_provider.lti import LTI
+from lti_provider.tests.factories import BASE_LTI_PARAMS, UserFactory
 
 
 class LTIBackendTest(TestCase):

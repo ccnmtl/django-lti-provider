@@ -2,9 +2,9 @@ from django.test.client import RequestFactory
 from django.test.testcases import TestCase
 from pylti.common import LTI_SESSION_KEY, LTINotInSessionException
 
-from lti_auth.lti import LTI
-from lti_auth.models import LTICourseContext
-from lti_auth.tests.factories import BASE_LTI_PARAMS, CONSUMERS, \
+from lti_provider.lti import LTI
+from lti_provider.models import LTICourseContext
+from lti_provider.tests.factories import BASE_LTI_PARAMS, CONSUMERS, \
     generate_lti_request, LTICourseContextFactory
 
 

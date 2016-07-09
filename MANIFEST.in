@@ -1,2 +1,2 @@
-recursive-include lti_auth *
+recursive-include lti_provider *
 

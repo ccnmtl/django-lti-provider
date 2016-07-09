@@ -1,4 +1,4 @@
-PY_DIRS=lti_auth
+PY_DIRS=lti_provider
 OUTPUT_PATH=ve
 VE ?= ./ve
 FLAKE8 ?= $(VE)/bin/flake8

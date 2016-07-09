@@ -1,4 +1,4 @@
-""" run tests for lti_auth
+""" run tests for lti_provider
 
 $ virtualenv ve
 $ ./ve/bin/pip install Django==1.8
@@ -26,14 +26,14 @@ def main():
             'django.contrib.auth',
             'django.contrib.contenttypes',
             'django.contrib.sessions',
-            'lti_auth',
+            'lti_provider',
             'django_jenkins',
         ),
         TEST_RUNNER='django.test.runner.DiscoverRunner',
 
         AUTHENTICATION_BACKENDS=[
             'django.contrib.auth.backends.ModelBackend',
-            'lti_auth.auth.LTIBackend',
+            'lti_provider.auth.LTIBackend',
         ],
         TEMPLATES=[
             {
@@ -56,10 +56,10 @@ def main():
             },
         ],
         COVERAGE_EXCLUDES_FOLDERS=['migrations'],
-        ROOT_URLCONF='lti_auth.tests.urls',
+        ROOT_URLCONF='lti_provider.tests.urls',
 
         PROJECT_APPS=[
-            'lti_auth',
+            'lti_provider',
         ],
         # Django replaces this, but it still wants it. *shrugs*
         DATABASES={

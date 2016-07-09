@@ -8,7 +8,7 @@ import factory
 import oauthlib.oauth1
 from oauthlib.oauth1.rfc5849 import CONTENT_TYPE_FORM_URLENCODED
 
-from lti_auth.models import LTICourseContext
+from lti_provider.models import LTICourseContext
 
 
 BASE_LTI_PARAMS = {

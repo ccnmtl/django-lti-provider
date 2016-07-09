@@ -1,6 +1,6 @@
 from django.conf.urls import url
 
-from lti_auth.views import LTIConfigView, LTILandingPage, LTIRoutingView, \
+from lti_provider.views import LTIConfigView, LTILandingPage, LTIRoutingView, \
     LTICourseEnableView
 
 

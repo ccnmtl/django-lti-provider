@@ -1,1 +1,1 @@
-# django-lti-auth
+# django-lti-provider

@@ -7,7 +7,7 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('lti_auth', '0002_auto_20151231_1107'),
+        ('lti_provider', '0002_auto_20151231_1107'),
     ]
 
     operations = [

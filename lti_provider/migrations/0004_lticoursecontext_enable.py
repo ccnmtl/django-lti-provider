@@ -2,23 +2,18 @@
 from __future__ import unicode_literals
 
 from django.db import migrations, models
-import uuid
 
 
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('lti_auth', '0001_initial'),
+        ('lti_provider', '0003_auto_20151231_1109'),
     ]
 
     operations = [
-        migrations.RemoveField(
-            model_name='lticoursecontext',
-            name='lms_context_id',
-        ),
         migrations.AddField(
             model_name='lticoursecontext',
-            name='uuid',
-            field=models.UUIDField(default=uuid.uuid4, editable=False),
+            name='enable',
+            field=models.BooleanField(default=False),
         ),
     ]

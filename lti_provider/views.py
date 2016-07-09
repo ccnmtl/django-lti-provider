@@ -10,8 +10,8 @@ from django.template.context import RequestContext
 from django.utils.decorators import method_decorator
 from django.views.generic.base import View, TemplateView
 
-from lti_auth.lti import LTI
-from lti_auth.models import LTICourseContext
+from lti_provider.lti import LTI
+from lti_provider.models import LTICourseContext
 
 
 class LTIAuthMixin(object):
@@ -38,7 +38,7 @@ class LTIAuthMixin(object):
             if user is None:
                 lti.clear_session(request)
                 return render_to_response(
-                    'lti_auth/fail_auth.html', {},
+                    'lti_provider/fail_auth.html', {},
                     context_instance=RequestContext(request))
 
             # check if course is configured
@@ -47,7 +47,7 @@ class LTIAuthMixin(object):
             except (KeyError, ValueError, LTICourseContext.DoesNotExist):
                 lti.clear_session(request)
                 return render_to_response(
-                    'lti_auth/fail_course_configuration.html', {},
+                    'lti_provider/fail_course_configuration.html', {},
                     context_instance=RequestContext(request))
 
             # add user to the course
@@ -103,7 +103,7 @@ class LTIRoutingView(LTIAuthMixin, View):
 
 
 class LTIConfigView(TemplateView):
-    template_name = 'lti_auth/config.xml'
+    template_name = 'lti_provider/config.xml'
     content_type = 'text/xml; charset=utf-8'
 
     def get_context_data(self, **kwargs):
@@ -133,7 +133,7 @@ class LTIConfigView(TemplateView):
 
 
 class LTILandingPage(TemplateView):
-    template_name = 'lti_auth/landing_page.html'
+    template_name = 'lti_provider/landing_page.html'
 
     def get_context_data(self, **kwargs):
         domain = self.request.get_host()

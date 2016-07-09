@@ -3,7 +3,7 @@ from pylti.common import (
     LTIException, LTINotInSessionException, LTI_SESSION_KEY,
     verify_request_common, LTIRoleException, LTI_ROLES)
 
-from lti_auth.models import LTICourseContext
+from lti_provider.models import LTICourseContext
 
 
 class LTI(object):
