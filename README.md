@@ -1,3 +1,5 @@
+# Documentation
+
 django-lti-provider provides LTI functionality for the Django web framework. This
 work began as a port of MIT's [LTI Flask Sample](https://github.com/mitodl/mit_lti_flask_sample),
 which demonstrates a sample LTI provider for the Flask Framework based on 
@@ -14,7 +16,7 @@ django-lti-provider offers:
 
 The library is used at Columbia University's [Center for Teaching And Learning](http://ctl.columbia.edu) in [Mediathread](http://www.github.com/ccnmtl/mediathread) and the RedirectPlus tool (upcoming).
 
-# Documentation
+More documentation and examples to come. This is a work in progress as code is ported over from the Mediathread application. Contributions welcome. Use at your own risk.
 
 ## Installation
 
