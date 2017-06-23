@@ -16,4 +16,4 @@ pycodestyle==2.0.0
 flake8==2.6.2
 django-jenkins==0.18.1
 pep8==1.7.0
-pyflakes==1.2.3
+pyflakes==1.5.0
