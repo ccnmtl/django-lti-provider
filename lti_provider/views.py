@@ -6,7 +6,6 @@ from django.contrib.auth.models import Group
 from django.core.urlresolvers import reverse
 from django.http.response import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render_to_response
-from django.template.context import RequestContext
 from django.utils.decorators import method_decorator
 from django.views.generic.base import View, TemplateView
 
@@ -38,8 +37,7 @@ class LTIAuthMixin(object):
             if user is None:
                 lti.clear_session(request)
                 return render_to_response(
-                    'lti_provider/fail_auth.html', {},
-                    context_instance=RequestContext(request))
+                    'lti_provider/fail_auth.html', {})
 
             # check if course is configured
             try:
@@ -47,8 +45,7 @@ class LTIAuthMixin(object):
             except (KeyError, ValueError, LTICourseContext.DoesNotExist):
                 lti.clear_session(request)
                 return render_to_response(
-                    'lti_provider/fail_course_configuration.html', {},
-                    context_instance=RequestContext(request))
+                    'lti_provider/fail_course_configuration.html', {})
 
             # add user to the course
             self.join_groups(lti, ctx, user)

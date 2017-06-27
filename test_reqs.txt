@@ -1,4 +1,4 @@
-Django==1.9.7
+Django==1.11.2
 six==1.10.0
 nameparser==0.5.2
 httplib2==0.10.3
@@ -18,3 +18,4 @@ flake8==3.3.0
 django-jenkins==0.110.0
 pep8==1.7.0
 pyflakes==1.5.0
+pytz==2017.2
