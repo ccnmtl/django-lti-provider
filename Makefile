@@ -6,8 +6,7 @@ REQUIREMENTS ?= test_reqs.txt
 SYS_PYTHON ?= python
 PIP ?= $(VE)/bin/pip
 PY_SENTINAL ?= $(VE)/sentinal
-PYPI_URL ?= https://pypi.python.org/pypi/
-WHEEL_VERSION ?= 0.24.0
+WHEEL_VERSION ?= 0.29.0
 VIRTUALENV ?= virtualenv
 SUPPORT_DIR ?= requirements/virtualenv_support/
 MAX_COMPLEXITY ?= 7
@@ -23,8 +22,8 @@ clean:
 $(PY_SENTINAL):
 	rm -rf $(VE)
 	$(VIRTUALENV) --never-download $(VE)
-	$(PIP) install --index-url=$(PYPI_URL) wheel==$(WHEEL_VERSION)
-	$(PIP) install --use-wheel --no-deps --index-url=$(PYPI_URL) --requirement $(REQUIREMENTS)
+	$(PIP) install wheel==$(WHEEL_VERSION)
+	$(PIP) install --use-wheel --no-deps --requirement $(REQUIREMENTS)
 	touch $@
 
 test: $(REQUIREMENTS) $(PY_SENTINAL)
