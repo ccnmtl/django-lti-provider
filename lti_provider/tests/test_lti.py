@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.test.client import RequestFactory
 from django.test.testcases import TestCase
 from pylti.common import LTI_SESSION_KEY, LTINotInSessionException
@@ -60,7 +61,7 @@ class LTITest(TestCase):
 
         ctx = LTICourseContextFactory()
         lti.lti_params['custom_course_context'] = 'abc'
-        with self.assertRaises(ValueError):
+        with self.assertRaises(ValidationError):
             lti.custom_course_context()
 
         lti.lti_params['custom_course_context'] = ctx.uuid
