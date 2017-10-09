@@ -19,7 +19,8 @@ BASE_LTI_PARAMS = {
                              u':-724d6c2b5fcc4a17a26b9120a1d463aa:student',
     u'lti_message_type': u'basic-lti-launch-request',
     u'lti_version': u'LTI-1p0',
-    u'roles': u'Instructor,Staff',
+    u'roles':
+        u'urn:lti:instrole:ims/lis/Instructor,urn:lti:instrole:ims/lis/Staff',
     u'resource_link_id': u'-724d6c2b5fcc4a17a26b9120a1d463aa',
     u'user_id': u'student',
 }
@@ -42,7 +43,7 @@ def generate_lti_request(course_context=None, provider=None, use=None):
 
     params = BASE_LTI_PARAMS.copy()
     if course_context:
-        params.update({'custom_course_context': course_context.uuid})
+        params.update({'context_id': course_context.lms_course_context})
     if provider:
         params.update({'tool_consumer_info_product_family_code': provider})
     if use:
@@ -90,3 +91,4 @@ class LTICourseContextFactory(factory.DjangoModelFactory):
 
     group = factory.SubFactory(GroupFactory)
     faculty_group = factory.SubFactory(GroupFactory)
+    lms_course_context = factory.Sequence(lambda n: 'lti%d' % n)

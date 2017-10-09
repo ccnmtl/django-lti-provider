@@ -28,6 +28,10 @@ class LTI(object):
             (self.lti_params['oauth_consumer_key'],
              self.lti_params['user_id'])
 
+    def user_identifier(self):
+        if 'custom_canvas_user_login_id' in self.lti_params:
+            return self.lti_params['custom_canvas_user_login_id']
+
     def user_email(self):
         """
         Returns user email as provided by LTI
@@ -57,9 +61,32 @@ class LTI(object):
         :return: roles
         """
         if 'roles' in self.lti_params:
-            return self.lti_params.get('roles', None).split(',')
+            return self.lti_params.get('roles', None).lower().split(',')
 
         return []
+
+    def is_administrator(self):
+        return 'administrator' in self.lti_params.get('roles', '').lower()
+
+    def is_instructor(self):
+        roles = self.lti_params.get('roles', '').lower()
+        return 'instructor' in roles or 'staff' in roles
+
+    def course_context(self):
+        if 'context_id' in self.lti_params:
+            return self.lti_params.get('context_id')
+
+    def course_title(self):
+        if 'context_title' in self.lti_params:
+            return self.lti_params.get('context_title')
+
+    def sis_course_id(self):
+        if 'lis_course_offering_sourcedid' in self.lti_params:
+            return self.lti_params.get('lis_course_offering_sourcedid')
+
+    def canvas_domain(self):
+        if 'custom_canvas_api_domain' in self.lti_params:
+            return self.lti_params.get('custom_canvas_api_domain')
 
     def custom_course_context(self):
         """
