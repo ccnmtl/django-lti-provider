@@ -1,3 +1,5 @@
+Important: More documentation and examples to come. This is a work in progress as code is generalized from another application. This library is not yet on pypi, but will be soon.
+
 # Documentation
 
 django-lti-provider provides LTI functionality for the Django web framework. This
