@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group
 from django.core.urlresolvers import reverse
 from django.http.response import HttpResponseRedirect
-from django.shortcuts import get_object_or_404, render_to_response
+from django.shortcuts import get_object_or_404, render
 from django.utils.decorators import method_decorator
 from django.views.generic.base import View, TemplateView
 
@@ -31,28 +31,38 @@ class LTIAuthMixin(object):
     def dispatch(self, request, *args, **kwargs):
         lti = LTI(self.request_type, self.role_type)
 
-        if hasattr(settings, 'LTI_AUTHENTICATE') and settings.LTI_AUTHENTICATE:
-            # validate the user via oauth
-            user = authenticate(request=request, lti=lti)
-            if user is None:
-                lti.clear_session(request)
-                return render_to_response(
-                    'lti_provider/fail_auth.html', {})
+        # validate the user via oauth
+        user = authenticate(request=request, lti=lti)
+        if user is None:
+            lti.clear_session(request)
+            return render(request, 'lti_provider/fail_auth.html', {})
 
-            # check if course is configured
+        # login
+        login(request, user)
+
+        # check if course is configured
+        if settings.LTI_TOOL_CONFIGURATION['course_aware']:
             try:
-                ctx = lti.custom_course_context()
+                ctx = LTICourseContext.objects.get(
+                    lms_course_context=lti.course_context())
             except (KeyError, ValueError, LTICourseContext.DoesNotExist):
-                lti.clear_session(request)
-                return render_to_response(
-                    'lti_provider/fail_course_configuration.html', {})
+                return render(
+                    request,
+                    'lti_provider/fail_course_configuration.html',
+                    {
+                        'is_instructor': lti.is_instructor(),
+                        'is_administrator': lti.is_administrator(),
+                        'user': user,
+                        'lms_course': lti.course_context(),
+                        'lms_course_title': lti.course_title(),
+                        'sis_course_id': lti.sis_course_id(),
+                        'domain': lti.canvas_domain()
+                    })
 
             # add user to the course
             self.join_groups(lti, ctx, user)
 
-            # login
-            login(request, user)
-
+        self.lti = lti
         return super(LTIAuthMixin, self).dispatch(request, *args, **kwargs)
 
 
@@ -60,14 +70,9 @@ class LTIRoutingView(LTIAuthMixin, View):
     request_type = 'initial'
     role_type = 'any'
 
-    def custom_landing_page(self):
-        key = u'tool_consumer_info_product_family_code'
-        provider = self.request.POST.get(key, '').lower()
-        return 'canvas' in provider or 'blackboard' in provider
-
     def add_extra_parameters(self, url):
         if not hasattr(settings, 'LTI_EXTRA_PARAMETERS'):
-            return
+            return url
 
         if '?' not in url:
             url += '?'
@@ -75,8 +80,7 @@ class LTIRoutingView(LTIAuthMixin, View):
             url += '&'
 
         for key in settings.LTI_EXTRA_PARAMETERS:
-            value = self.request.POST.get(key, '')
-            url += '{}={}&'.format(key, value)
+            url += '{}={}&'.format(key, self.request.POST.get(key, ''))
 
         return url
 
@@ -87,15 +91,14 @@ class LTIRoutingView(LTIAuthMixin, View):
                 self.request.scheme, domain,
                 settings.LTI_TOOL_CONFIGURATION['embed_url'],
                 request.POST.get('launch_presentation_return_url'))
-        elif self.custom_landing_page():
-            # Canvas does not support launching in a new window/tab
-            # Provide a "launch in new tab" landing page
-            url = reverse('lti-landing-page')
+        elif settings.LTI_TOOL_CONFIGURATION['new_tab']:
+            url = reverse('lti-landing-page', args=[self.lti.course_context()])
         else:
-            url = '/'
+            url = settings.LTI_TOOL_CONFIGURATION['landing_url'].format(
+                self.request.scheme, self.request.get_host(),
+                self.lti.course_context())
 
         url = self.add_extra_parameters(url)
-
         return HttpResponseRedirect(url)
 
 
@@ -108,23 +111,15 @@ class LTIConfigView(TemplateView):
         launch_url = '%s://%s/%s' % (
             self.request.scheme, domain,
             settings.LTI_TOOL_CONFIGURATION['launch_url'])
-        icon_url = '%s://%s/%s' % (
-            self.request.scheme, domain,
-            settings.LTI_TOOL_CONFIGURATION['embed_icon_url'])
 
         ctx = {
             'domain': domain,
             'launch_url': launch_url,
             'title': settings.LTI_TOOL_CONFIGURATION['title'],
             'description': settings.LTI_TOOL_CONFIGURATION['description'],
-            'embed_icon_url': icon_url,
+            'embed_icon_url':
+                settings.LTI_TOOL_CONFIGURATION['embed_icon_url'],
             'embed_tool_id': settings.LTI_TOOL_CONFIGURATION['embed_tool_id'],
-            'course_navigation':
-                self.request.GET.get('course_navigation', None),
-            'account_navigation':
-                self.request.GET.get('account_navigation', None),
-            'user_navigation':
-                self.request.GET.get('user_navigation', None)
         }
         return ctx
 
@@ -134,14 +129,11 @@ class LTILandingPage(TemplateView):
 
     def get_context_data(self, **kwargs):
         domain = self.request.get_host()
-        landing_url = '{}://{}/?'.format(self.request.scheme, domain)
-
-        for key, value in self.request.GET.items():
-            landing_url += '{}={}&'.format(key, value)
+        url = settings.LTI_TOOL_CONFIGURATION['landing_url'].format(
+            self.request.scheme, domain, kwargs.get('context'))
 
         return {
-            'querydict': self.request.GET,
-            'landing_url': landing_url,
+            'landing_url': url,
             'title': settings.LTI_TOOL_CONFIGURATION['title']
         }
 
@@ -155,16 +147,18 @@ class LTICourseEnableView(View):
     def post(self, *args, **kwargs):
         group_id = self.request.POST.get('group')
         faculty_group_id = self.request.POST.get('faculty_group')
+        course_context = self.request.POST.get('lms_course')
+        title = self.request.POST.get('lms_course_title')
 
         (ctx, created) = LTICourseContext.objects.get_or_create(
-                group=get_object_or_404(Group, id=group_id),
-                faculty_group=get_object_or_404(Group, id=faculty_group_id))
+            group=get_object_or_404(Group, id=group_id),
+            faculty_group=get_object_or_404(Group, id=faculty_group_id),
+            lms_course_context=course_context)
 
-        ctx.enable = self.request.POST.get('lti-enable', 0) == '1'
-        ctx.save()
+        messages.add_message(
+            self.request, messages.INFO,
+            '<strong>Success!</strong> {} is connected to {}.'.format(
+                title, settings.LTI_TOOL_CONFIGURATION['title']))
 
-        messages.add_message(self.request, messages.INFO,
-                             'Your changes were saved.', fail_silently=True)
-
-        next_url = self.request.POST.get('next', '/')
-        return HttpResponseRedirect(next_url)
+        url = reverse('lti-landing-page', args=[course_context])
+        return HttpResponseRedirect(url)

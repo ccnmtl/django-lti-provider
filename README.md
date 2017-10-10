@@ -1,6 +1,6 @@
-# Documentation
+Important: More documentation and examples to come. This is a work in progress as code is generalized from another application. This library is not yet on pypi, but will be soon.
 
-*Important: More documentation and examples to come. This is a work in progress as code is generalized from another application. This library is not yet on pypi, but will be soon.*
+# Documentation
 
 django-lti-provider provides LTI functionality for the Django web framework. This
 work began as a port of MIT's [LTI Flask Sample](https://github.com/mitodl/mit_lti_flask_sample),
@@ -16,7 +16,7 @@ django-lti-provider offers:
 * a templated landing page view for those LMS who do not have a 'launch in new tab' option, i.e. Canvas
 * support for Canvas' [embedded tool extensions](https://canvas.instructure.com/doc/api/file.editor_button_tools.html)
 
-The library is used at Columbia University's [Center for Teaching And Learning](http://ctl.columbia.edu) in [Mediathread](http://www.github.com/ccnmtl/mediathread) and the RedirectPlus tool (upcoming).
+The library is used at Columbia University's [Center for Teaching And Learning](http://ctl.columbia.edu) in [Mediathread](http://www.github.com/ccnmtl/mediathread).
 
 
 ## Installation
@@ -34,20 +34,31 @@ Add to ```INSTALLED_APPS``` in your ```settings.py```::
 
 ## Dependencies
 
-Django==1.9.7
-six==1.10.0
-nameparser==0.4.0
-httplib2==0.9.2
+Django==1.9.7 or greater
+six==1.11.0
+nameparser==0.5.3
+httplib2==0.10.3
 oauth==1.0.1
-oauth2==1.9rc1
-oauthlib==0.6.3
+oauth2==1.9.0.post1
+oauthlib==2.0.4
 pylti>=0.1.3
 
 ## Configuration
 
 Add the URL route::
 ```python
-(r'^lti/', include('lti_provider.urls'))
+url(r'^lti/', include('lti_provider.urls'))
+
+```
+
+Add the LTIBackend to your AUTHENTICATION_BACKENDS:
+```python
+AUTHENTICATION_BACKENDS = [
+  'django.contrib.auth.backends.ModelBackend',
+  'lti_provider.auth.LTIBackend',
+]
+```
+
 ```
 The ``LTI_TOOL_CONFIGURATION`` variable in your ``settings.py`` allows you to
 configure your application's config.xml. ([Edu Apps](https://www.edu-apps.org/code.html) has good documentation
@@ -60,26 +71,26 @@ LTI_TOOL_CONFIGURATION = {
     'embed_url': '<the view endpoint for an embed tool>' or '',
     'embed_icon_url': '<the icon url to use for an embed tool>' or '',
     'embed_tool_id': '<the embed tool id>' or '',
-    'access': '<public|anonymous>'
+    'landing_url': '<the view landing page>',
+    'course_aware': '<True or False>',
+    'course_navigation': '<True or False>'
 }
-```
 
-The ```LTI_AUTHENTICATE``` variable in your ```settings.py``` turns on authentication for all LTI flows.
-```python
-LTI_AUTHENTICATE = True
-```
+To pass through extra LTI parameters to your provider, populate the LTI_EXTRA_PARAMETERS variable in your settings.py
 
-Also add the LTIBackend to your AUTHENTICATION_BACKENDS:
-```python
-AUTHENTICATION_BACKENDS = [
-  'django.contrib.auth.backends.ModelBackend',
-  'lti_auth.auth.LTIBackend',
-]
-```
-
-To pass through extra LTI parameters to your provider, populate the ```LTI_EXTRA_PARAMETERS``` variable
-in your ```settings.py```
-```
 LTI_EXTRA_PARAMETERS = ['lti_version']
-```
 
+The ``PYLTI_CONFIG`` variable in your ``settings.py`` configures the 
+application consumers and secrets.
+
+PYLTI_CONFIG = {
+    'consumers': {
+        '<random number string>': {
+            'secret': '<random number string>'
+        }
+    }
+}
+
+## LMS Configuration
+
+Now, add your application to your favorite LMS provider.

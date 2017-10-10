@@ -10,4 +10,4 @@ ve
 reports
 build
 dist
-django_lti_auth.egg-info
+django_lti_provider.egg-info/

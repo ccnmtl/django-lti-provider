@@ -1,12 +1,10 @@
-from django.core.exceptions import ValidationError
 from django.test.client import RequestFactory
 from django.test.testcases import TestCase
 from pylti.common import LTI_SESSION_KEY, LTINotInSessionException
 
 from lti_provider.lti import LTI
-from lti_provider.models import LTICourseContext
 from lti_provider.tests.factories import BASE_LTI_PARAMS, CONSUMERS, \
-    generate_lti_request, LTICourseContextFactory
+    generate_lti_request
 
 
 class LTITest(TestCase):
@@ -45,32 +43,12 @@ class LTITest(TestCase):
         self.assertEquals(lti.user_roles(), [])
 
         lti.lti_params = BASE_LTI_PARAMS
-        self.assertEquals(lti.user_roles(), ['Instructor', 'Staff'])
+        self.assertEquals(lti.user_roles(), [
+            u'urn:lti:instrole:ims/lis/instructor',
+            u'urn:lti:instrole:ims/lis/staff'])
 
-    def test_custom_course_context(self):
-        lti = LTI('initial', 'any')
-
-        with self.assertRaises(KeyError):
-            lti.custom_course_context()
-
-        lti.lti_params = BASE_LTI_PARAMS
-        lti.lti_params['custom_course_context'] = \
-            'adb9508d-f271-40f1-8445-30f85c089b88'
-        with self.assertRaises(LTICourseContext.DoesNotExist):
-            lti.custom_course_context()
-
-        ctx = LTICourseContextFactory()
-        lti.lti_params['custom_course_context'] = 'abc'
-        with self.assertRaises(ValidationError):
-            lti.custom_course_context()
-
-        lti.lti_params['custom_course_context'] = ctx.uuid
-        with self.assertRaises(LTICourseContext.DoesNotExist):
-            lti.custom_course_context()
-
-        ctx.enable = True
-        ctx.save()
-        self.assertEquals(lti.custom_course_context(), ctx)
+        self.assertTrue(lti.is_instructor())
+        self.assertFalse(lti.is_administrator())
 
     def test_consumers(self):
         lti = LTI('any', 'any')
