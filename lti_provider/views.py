@@ -157,7 +157,7 @@ class LTICourseEnableView(View):
 
         messages.add_message(
             self.request, messages.INFO,
-            '<b>Success!</b> {} is connected to {}.'.format(
+            '<strong>Success!</strong> {} is connected to {}.'.format(
                 title, settings.LTI_TOOL_CONFIGURATION['title']))
 
         url = reverse('lti-landing-page', args=[course_context])
