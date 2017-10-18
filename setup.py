@@ -41,7 +41,6 @@ setup(
         "oauth2",
         "oauthlib",
         "pylti",
-        "factory_boy"
         ],
     scripts=[],
     license="BSD",
