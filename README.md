@@ -34,14 +34,13 @@ Add to ```INSTALLED_APPS``` in your ```settings.py```::
 
 ## Dependencies
 
-Django==1.9.7 or greater
-six==1.11.0
-nameparser==0.5.3
-httplib2==0.10.3
-oauth==1.0.1
-oauth2==1.9.0.post1
-oauthlib==2.0.4
-pylti>=0.1.3
+* Django==1.9.7 or greater
+* nameparser
+* httplib2
+* oauth
+* oauth2
+* oauthlib
+* pylti
 
 ## Configuration
 
