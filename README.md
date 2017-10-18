@@ -34,7 +34,7 @@ Add to ```INSTALLED_APPS``` in your ```settings.py```::
 
 ## Dependencies
 
-* Django==1.9.7 or greater
+* Django
 * nameparser
 * httplib2
 * oauth
