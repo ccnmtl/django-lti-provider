@@ -120,6 +120,8 @@ class LTIConfigView(TemplateView):
             'embed_icon_url':
                 settings.LTI_TOOL_CONFIGURATION['embed_icon_url'],
             'embed_tool_id': settings.LTI_TOOL_CONFIGURATION['embed_tool_id'],
+            'frame_width': settings.LTI_TOOL_CONFIGURATION['frame_width'],
+            'frame_height': settings.LTI_TOOL_CONFIGURATION['frame_height'],
         }
         return ctx
 

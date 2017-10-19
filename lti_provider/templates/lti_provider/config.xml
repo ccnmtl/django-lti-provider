@@ -14,6 +14,8 @@
       <lticm:property name="privacy_level">public</lticm:property>
       <lticm:property name="domain">{{domain}}</lticm:property>
       <lticm:property name="text">{% if debug %}Dev{% endif %} {{title}}</lticm:property>
+      <lticm:property name="selection_width">{{frame_width}}</lticm:property>
+      <lticm:property name="selection_height">{{frame_height}}</lticm:property>
       {% if course_navigation %} 
       <lticm:options name="course_navigation">
         <lticm:property name="default">disabled</lticm:property>
