@@ -1,15 +1,20 @@
+import time
+
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group
 from django.core.urlresolvers import reverse
+from django.http import HttpResponse
 from django.http.response import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.utils.decorators import method_decorator
 from django.views.generic.base import View, TemplateView
 from lti_provider.lti import LTI
 from lti_provider.models import LTICourseContext
+from pylti.common import \
+    generate_request_xml, LTIPostMessageException, post_message
 
 
 class LTIAuthMixin(object):
@@ -164,3 +169,34 @@ class LTICourseEnableView(View):
 
         url = reverse('lti-landing-page', args=[course_context])
         return HttpResponseRedirect(url)
+
+
+class LTIPostGrade(LTIAuthMixin, View):
+
+    def message_identifier(self):
+        return '{:.0f}'.format(time.time())
+
+    def post(self, request, *args, **kwargs):
+        """
+        Post grade to LTI consumer using XML
+
+        :param: grade: 0 <= grade <= 1
+        :return: True is post successful and grade valid
+        :exception: LTIPostMessageException if call failed
+        """
+        score = float(request.POST.get('score'))
+
+        xml = generate_request_xml(
+            self.message_identifier(), 'replaceResult',
+            self.lti.lis_result_sourcedid(request), score)
+
+        if not post_message(
+            self.lti.consumers(), self.lti.oauth_consumer_key(request),
+                self.lti.lis_outcome_service_url(request), xml):
+
+            # Something went wrong, display an error.
+            # Is 505 the right thing to do here?
+            raise LTIPostMessageException('Post grade failed')
+        else:
+            redirect_url = request.POST.get('next', '/')
+            return HttpResponseRedirect(redirect_url)
