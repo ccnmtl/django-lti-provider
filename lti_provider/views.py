@@ -8,7 +8,6 @@ from django.http.response import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.utils.decorators import method_decorator
 from django.views.generic.base import View, TemplateView
-
 from lti_provider.lti import LTI
 from lti_provider.models import LTICourseContext
 
@@ -17,10 +16,10 @@ class LTIAuthMixin(object):
     role_type = 'any'
     request_type = 'any'
 
-    def join_groups(self, lti, ctx, user):
+    def join_groups(self, request, lti, ctx, user):
         # add the user to the requested groups
         user.groups.add(ctx.group)
-        for role in lti.user_roles():
+        for role in lti.user_roles(request):
             role = role.lower()
             if ('staff' in role or
                 'instructor' in role or
@@ -44,23 +43,23 @@ class LTIAuthMixin(object):
         if settings.LTI_TOOL_CONFIGURATION['course_aware']:
             try:
                 ctx = LTICourseContext.objects.get(
-                    lms_course_context=lti.course_context())
+                    lms_course_context=lti.course_context(request))
             except (KeyError, ValueError, LTICourseContext.DoesNotExist):
                 return render(
                     request,
                     'lti_provider/fail_course_configuration.html',
                     {
-                        'is_instructor': lti.is_instructor(),
-                        'is_administrator': lti.is_administrator(),
+                        'is_instructor': lti.is_instructor(request),
+                        'is_administrator': lti.is_administrator(request),
                         'user': user,
-                        'lms_course': lti.course_context(),
-                        'lms_course_title': lti.course_title(),
-                        'sis_course_id': lti.sis_course_id(),
-                        'domain': lti.canvas_domain()
+                        'lms_course': lti.course_context(request),
+                        'lms_course_title': lti.course_title(request),
+                        'sis_course_id': lti.sis_course_id(request),
+                        'domain': lti.canvas_domain(request)
                     })
 
             # add user to the course
-            self.join_groups(lti, ctx, user)
+            self.join_groups(request, lti, ctx, user)
 
         self.lti = lti
         return super(LTIAuthMixin, self).dispatch(request, *args, **kwargs)
@@ -92,11 +91,12 @@ class LTIRoutingView(LTIAuthMixin, View):
                 settings.LTI_TOOL_CONFIGURATION['embed_url'],
                 request.POST.get('launch_presentation_return_url'))
         elif settings.LTI_TOOL_CONFIGURATION['new_tab']:
-            url = reverse('lti-landing-page', args=[self.lti.course_context()])
+            url = reverse('lti-landing-page',
+                          args=[self.lti.course_context(request)])
         else:
             url = settings.LTI_TOOL_CONFIGURATION['landing_url'].format(
                 self.request.scheme, self.request.get_host(),
-                self.lti.course_context())
+                self.lti.course_context(request))
 
         url = self.add_extra_parameters(url)
         return HttpResponseRedirect(url)

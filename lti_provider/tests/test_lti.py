@@ -1,60 +1,63 @@
+from django.contrib.sessions.middleware import SessionMiddleware
 from django.test.client import RequestFactory
 from django.test.testcases import TestCase
-from pylti.common import LTI_SESSION_KEY, LTINotInSessionException
-
 from lti_provider.lti import LTI
 from lti_provider.tests.factories import BASE_LTI_PARAMS, CONSUMERS, \
     generate_lti_request
+from pylti.common import LTI_SESSION_KEY, LTINotInSessionException
 
 
 class LTITest(TestCase):
 
+    def setUp(self):
+        self.request = RequestFactory()
+        self.request.COOKIES = {}
+        middleware = SessionMiddleware()
+        middleware.process_request(self.request)
+        self.request.session.save()
+
+        for prop, value in BASE_LTI_PARAMS.items():
+            self.request.session[prop] = value
+
+        self.lti = LTI('initial', 'any')
+
+        self.emptyRequest = RequestFactory()
+        self.emptyRequest.COOKIES = {}
+        middleware = SessionMiddleware()
+        middleware.process_request(self.emptyRequest)
+        self.emptyRequest.session.save()
+
     def test_init(self):
-        lti = LTI('initial', 'any')
-        self.assertEquals(lti.request_type, 'initial')
-        self.assertEquals(lti.role_type, 'any')
+        self.assertEquals(self.lti.request_type, 'initial')
+        self.assertEquals(self.lti.role_type, 'any')
 
     def test_consumer_user_id(self):
-        lti = LTI('initial', 'any')
-        lti.lti_params = BASE_LTI_PARAMS.copy()
-        lti.lti_params['oauth_consumer_key'] = '1234567890'
-
-        self.assertEquals(lti.consumer_user_id(), '1234567890-student')
+        self.request.session['oauth_consumer_key'] = '1234567890'
+        self.assertEquals(
+            self.lti.consumer_user_id(self.request), '1234567890-student')
 
     def test_user_email(self):
-        lti = LTI('initial', 'any')
-        self.assertIsNone(lti.user_email())
-
-        lti.lti_params = BASE_LTI_PARAMS
-        self.assertEquals(lti.user_email(), 'foo@bar.com')
+        self.assertIsNone(self.lti.user_email(self.emptyRequest))
+        self.assertEquals(self.lti.user_email(self.request), 'foo@bar.com')
 
     def test_user_fullname(self):
-        lti = LTI('initial', 'any')
-        self.assertEquals(lti.user_fullname(), '')
+        self.assertEquals(self.lti.user_fullname(self.emptyRequest), '')
 
-        lti.lti_params = {'user_id': 'student_one'}
-        self.assertEquals(lti.user_fullname(), 'student_one')
-
-        lti.lti_params = BASE_LTI_PARAMS
-        self.assertEquals(lti.user_fullname(), 'Foo Bar Baz')
+        self.assertEquals(self.lti.user_fullname(self.request), 'Foo Bar Baz')
 
     def test_user_roles(self):
-        lti = LTI('initial', 'any')
-        self.assertEquals(lti.user_roles(), [])
+        self.assertEquals(self.lti.user_roles(self.emptyRequest), [])
 
-        lti.lti_params = BASE_LTI_PARAMS
-        self.assertEquals(lti.user_roles(), [
+        self.assertEquals(self.lti.user_roles(self.request), [
             u'urn:lti:instrole:ims/lis/instructor',
             u'urn:lti:instrole:ims/lis/staff'])
 
-        self.assertTrue(lti.is_instructor())
-        self.assertFalse(lti.is_administrator())
+        self.assertTrue(self.lti.is_instructor(self.request))
+        self.assertFalse(self.lti.is_administrator(self.request))
 
     def test_consumers(self):
-        lti = LTI('any', 'any')
-
         with self.settings(PYLTI_CONFIG={'consumers': CONSUMERS}):
-            self.assertEquals(lti._consumers(), CONSUMERS)
+            self.assertEquals(self.lti.consumers(), CONSUMERS)
 
     def test_verify_any(self):
         lti = LTI('any', 'any')

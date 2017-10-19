@@ -1,9 +1,17 @@
 from django.conf import settings
 from pylti.common import (
     LTIException, LTINotInSessionException, LTI_SESSION_KEY,
-    verify_request_common, LTIRoleException, LTI_ROLES)
+    verify_request_common, LTIRoleException, LTI_ROLES, LTI_PROPERTY_LIST)
 
 from lti_provider.models import LTICourseContext
+
+
+LTI_PROPERTY_LIST_EX = [
+    'custom_canvas_user_login_id',
+    'context_title',
+    'lis_course_offering_sourcedid',
+    'custom_canvas_api_domain'
+]
 
 
 class LTI(object):
@@ -18,93 +26,23 @@ class LTI(object):
     def __init__(self, request_type, role_type):
         self.request_type = request_type
         self.role_type = role_type
-        self.lti_params = {}
-
-    def consumer_user_id(self):  # pylint: disable=no-self-use
-        """
-        Returns user_id as provided by LTI
-        """
-        return "%s-%s" % \
-            (self.lti_params['oauth_consumer_key'],
-             self.lti_params['user_id'])
-
-    def user_identifier(self):
-        if 'custom_canvas_user_login_id' in self.lti_params:
-            return self.lti_params['custom_canvas_user_login_id']
-
-    def user_email(self):
-        """
-        Returns user email as provided by LTI
-        """
-        if 'lis_person_contact_email_primary' in self.lti_params:
-            return self.lti_params['lis_person_contact_email_primary']
-
-        return None
-
-    def user_fullname(self):
-        """
-        Returns user's full name as provided by LTI
-        """
-        if ('lis_person_name_full' in self.lti_params and
-                len(self.lti_params['lis_person_name_full']) > 0):
-            return self.lti_params['lis_person_name_full']
-
-        if 'user_id' in self.lti_params:
-            return self.lti_params['user_id']
-
-        return ''
-
-    def user_roles(self):  # pylint: disable=no-self-use
-        """
-        LTI roles of the authenticated user
-
-        :return: roles
-        """
-        if 'roles' in self.lti_params:
-            return self.lti_params.get('roles', None).lower().split(',')
-
-        return []
-
-    def is_administrator(self):
-        return 'administrator' in self.lti_params.get('roles', '').lower()
-
-    def is_instructor(self):
-        roles = self.lti_params.get('roles', '').lower()
-        return 'instructor' in roles or 'staff' in roles
-
-    def course_context(self):
-        if 'context_id' in self.lti_params:
-            return self.lti_params.get('context_id')
-
-    def course_title(self):
-        if 'context_title' in self.lti_params:
-            return self.lti_params.get('context_title')
-
-    def sis_course_id(self):
-        if 'lis_course_offering_sourcedid' in self.lti_params:
-            return self.lti_params.get('lis_course_offering_sourcedid')
-
-    def canvas_domain(self):
-        if 'custom_canvas_api_domain' in self.lti_params:
-            return self.lti_params.get('custom_canvas_api_domain')
-
-    def custom_course_context(self):
-        """
-        Returns the custom LTICourseContext id as provided by LTI
-
-        throws: KeyError or ValueError or LTICourseContext.DoesNotExist
-        :return: context -- the LTICourseContext instance or None
-        """
-        return LTICourseContext.objects.get(
-            enable=True,
-            uuid=self.lti_params['custom_course_context'])
 
     def clear_session(self, request):
         """
         Invalidate the session
         """
-        if LTI_SESSION_KEY in request.session:
-            request.session[LTI_SESSION_KEY] = False
+        request.session.flush()
+
+    def initialize_session(self, request, params):
+        # All good to go, store all of the LTI params into a
+        # session dict for use in views
+        for prop in LTI_PROPERTY_LIST:
+            if params.get(prop, None):
+                request.session[prop] = params[prop]
+
+        for prop in LTI_PROPERTY_LIST_EX:
+            if params.get(prop, None):
+                request.session[prop] = params[prop]
 
     def verify(self, request):
         """
@@ -120,7 +58,7 @@ class LTI(object):
         elif self.request_type == 'any':
             self._verify_any(request)
         else:
-            raise LTIException("Unknown request type")
+            raise LTIException('Unknown request type')
 
         return True
 
@@ -147,7 +85,7 @@ class LTI(object):
 
     def _verify_request(self, request):
         """
-        Verify LTI request
+        Verify initial LTI request
 
         :raises: LTIException is request validation failed
         """
@@ -157,22 +95,22 @@ class LTI(object):
             params = dict(request.GET.iteritems())
 
         try:
-            verify_request_common(self._consumers(),
+            verify_request_common(self.consumers(),
                                   request.build_absolute_uri(),
                                   request.method, request.META,
                                   params)
 
             self._validate_role()
 
-            self.lti_params = params
+            self.initialize_session(request, params)
             request.session[LTI_SESSION_KEY] = True
             return True
         except LTIException:
-            self.lti_params = {}
+            self.clear_session(request)
             request.session[LTI_SESSION_KEY] = False
             raise
 
-    def _consumers(self):
+    def consumers(self):
         """
         Gets consumer's map from config
         :return: consumers map
@@ -199,3 +137,76 @@ class LTI(object):
                 raise LTIException("Unknown role {}.".format(self.role_type))
 
         return True
+
+    def custom_course_context(self, request):
+        """
+        Returns the custom LTICourseContext id as provided by LTI
+
+        throws: KeyError or ValueError or LTICourseContext.DoesNotExist
+        :return: context -- the LTICourseContext instance or None
+        """
+        return LTICourseContext.objects.get(
+            enable=True,
+            uuid=self.custom_course_context(request))
+
+    def message_identifier(self, request):
+        return 'edx'  # ?
+
+    def canvas_domain(self, request):
+        return request.session.get('custom_canvas_api_domain', None)
+
+    def consumer_user_id(self, request):
+        return "%s-%s" % \
+            (self.oauth_consumer_key(request), self.user_id(request))
+
+    def course_context(self, request):
+        return request.session.get('context_id', None)
+
+    def course_title(self, request):
+        return request.session.get('context_title', None)
+
+    def is_administrator(self, request):
+        return 'administrator' in request.session.get('roles', '').lower()
+
+    def is_instructor(self, request):
+        roles = request.session.get('roles', '').lower()
+        return 'instructor' in roles or 'staff' in roles
+
+    def lis_outcome_service_url(self, request):
+        return request.session.get('lis_outcome_service_url', None)
+
+    def lis_result_sourcedid(self, request):
+        return request.session.get('lis_result_sourcedid', None)
+
+    def oauth_consumer_key(self, request):
+        return request.session.get('oauth_consumer_key', None)
+
+    def user_email(self, request):
+        return request.session.get('lis_person_contact_email_primary', None)
+
+    def user_fullname(self, request):
+        name = request.session.get('lis_person_name_full', None)
+        if not name or len(name) < 1:
+            name = self.user_id(request)
+
+        return name or ''
+
+    def user_id(self, request):
+        return request.session.get('user_id', None)
+
+    def user_identifier(self, request):
+        return request.session.get('custom_canvas_user_login_id', None)
+
+    def user_roles(self, request):  # pylint: disable=no-self-use
+        """
+        LTI roles of the authenticated user
+
+        :return: roles
+        """
+        roles = request.session.get('roles', None)
+        if not roles:
+            return []
+        return roles.lower().split(',')
+
+    def sis_course_id(self, request):
+        return request.session.get('lis_course_offering_sourcedid', None)
