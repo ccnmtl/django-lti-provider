@@ -72,7 +72,10 @@ LTI_TOOL_CONFIGURATION = {
     'embed_tool_id': '<the embed tool id>' or '',
     'landing_url': '<the view landing page>',
     'course_aware': '<True or False>',
-    'course_navigation': '<True or False>'
+    'course_navigation': '<True or False>',
+    'assignment_new_tab': '<True or False>',
+    'frame_width': <width in pixels>,
+    'frame_height': <height in pixels>
 }
 
 To pass through extra LTI parameters to your provider, populate the LTI_EXTRA_PARAMETERS variable in your settings.py
