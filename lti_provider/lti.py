@@ -102,6 +102,7 @@ class LTI(object):
 
             self._validate_role()
 
+            self.clear_session(request)
             self.initialize_session(request, params)
             request.session[LTI_SESSION_KEY] = True
             return True
@@ -148,9 +149,6 @@ class LTI(object):
         return LTICourseContext.objects.get(
             enable=True,
             uuid=self.custom_course_context(request))
-
-    def message_identifier(self, request):
-        return 'edx'  # ?
 
     def canvas_domain(self, request):
         return request.session.get('custom_canvas_api_domain', None)
