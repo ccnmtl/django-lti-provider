@@ -180,7 +180,7 @@ class LTIPostGrade(LTIAuthMixin, View):
         Post grade to LTI consumer using XML
 
         :param: grade: 0 <= grade <= 1
-        :return: True is post successful and grade valid
+        :return: True if post successful and grade valid
         :exception: LTIPostMessageException if call failed
         """
         score = float(request.POST.get('score'))
