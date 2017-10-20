@@ -64,7 +64,6 @@ Complete a migration
    ./manage.py migrate
 ```
 
-```
 The ``LTI_TOOL_CONFIGURATION`` variable in your ``settings.py`` allows you to
 configure your application's config.xml. ([Edu Apps](https://www.edu-apps.org/code.html) has good documentation
 on configuring an lti provider through xml.)
@@ -88,6 +87,7 @@ LTI_TOOL_CONFIGURATION = {
         '<name>': '<landing_url>'
     }
 }
+```
 
 To pass through extra LTI parameters to your provider, populate the LTI_EXTRA_PARAMETERS variable in your settings.py.
 This is useful for custom parameters you may specify at installation time.
