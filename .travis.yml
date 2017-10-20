@@ -1,16 +1,23 @@
 language: python
 sudo: false
 python:
-  - "2.7"
-  - "3.5"
+  - '2.7'
+  - '3.5'
 env:
   - DJANGO="Django>=1.8.0,<1.9.0"
   - DJANGO="Django>=1.11.0,<1.12.0"
-
-# command to run tests
 script:
   - make
 notifications:
   slack: ccnmtl:GizSNscLWJLldjQrffB8mwgm
 after_success:
   - coveralls
+deploy:
+  provider: pypi
+  distributions: "sdist bdist_wheel"
+  user: ctlpypi
+  password:
+    secure: QIkQv0T6VKP4PUNzI9JXRi2IUy9gGpf0pO4kKgzgaUOOavfwnWrcpWD0RpVOqFu9+hcreKPENAxnXomMu8GSnSsW/61YZ97bM6ZqzstgRDZvmwK4UijYDrqw4nc5Jq9H3h/TQSvtTL+UBzCyLP/F/p6Jsx08Cacciv3CJVKo9Qs=
+  on:
+    tags: true
+    repo: ccnmtl/django-lti-provider
