@@ -16,7 +16,7 @@
       <lticm:property name="text">{% if debug %}Dev{% endif %} {{title}}</lticm:property>
       <lticm:property name="selection_width">{{frame_width}}</lticm:property>
       <lticm:property name="selection_height">{{frame_height}}</lticm:property>
-      {% if course_navigation %} 
+      {% if navigation %} 
       <lticm:options name="course_navigation">
         <lticm:property name="default">disabled</lticm:property>
         <lticm:property name="enabled">true</lticm:property>

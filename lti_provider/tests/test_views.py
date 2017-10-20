@@ -1,11 +1,11 @@
 from django.contrib.sessions.middleware import SessionMiddleware
+from django.core.urlresolvers import reverse
 from django.test import TestCase, RequestFactory
-from pylti.common import LTI_SESSION_KEY
-
 from lti_provider.lti import LTI
 from lti_provider.tests.factories import LTICourseContextFactory, \
     UserFactory, CONSUMERS, generate_lti_request, BASE_LTI_PARAMS
 from lti_provider.views import LTIAuthMixin, LTIRoutingView
+from pylti.common import LTI_SESSION_KEY
 
 
 TEST_LTI_TOOL_CONFIGURATION = {
@@ -40,8 +40,9 @@ class LTIViewTest(TestCase):
         mixin = LTIAuthMixin()
         ctx = LTICourseContextFactory()
         user = UserFactory()
+        self.request.user = user
 
-        mixin.join_groups(self.request, self.lti, ctx, user)
+        mixin.join_groups(self.request, self.lti, ctx)
         self.assertTrue(user in ctx.group.user_set.all())
         self.assertTrue(user in ctx.faculty_group.user_set.all())
 
@@ -49,9 +50,9 @@ class LTIViewTest(TestCase):
         request = generate_lti_request()
 
         response = LTIRoutingView().dispatch(request)
-        self.assertEquals(response.status_code, 200)
+        self.assertEquals(response.status_code, 302)
 
-        self.assertTrue('Authentication Failed' in response.content)
+        self.assertEquals(response.url, reverse('lti-fail-auth'))
         self.assertFalse(request.session.get(LTI_SESSION_KEY, False))
 
     def test_launch_invalid_course(self):
@@ -61,9 +62,9 @@ class LTIViewTest(TestCase):
             request = generate_lti_request()
 
             response = LTIRoutingView().dispatch(request)
-            self.assertEquals(response.status_code, 200)
-
-            self.assertTrue('Course Configuration' in response.content)
+            self.assertEquals(response.status_code, 302)
+            self.assertEquals(response.url, reverse('lti-course-config'))
+            self.assertTrue(request.session.get(LTI_SESSION_KEY, False))
 
     def test_launch(self):
         with self.settings(

@@ -18,6 +18,7 @@ django-lti-provider offers:
 
 The library is used at Columbia University's [Center for Teaching And Learning](http://ctl.columbia.edu) in [Mediathread](http://www.github.com/ccnmtl/mediathread).
 
+See an example Django app using the library at https://github.com/ccnmtl/django-lti-provider-example.
 
 ## Installation
 
@@ -58,6 +59,11 @@ AUTHENTICATION_BACKENDS = [
 ]
 ```
 
+Complete a migration
+```python
+   ./manage.py migrate
+```
+
 ```
 The ``LTI_TOOL_CONFIGURATION`` variable in your ``settings.py`` allows you to
 configure your application's config.xml. ([Edu Apps](https://www.edu-apps.org/code.html) has good documentation
@@ -65,20 +71,21 @@ on configuring an lti provider through xml.)
 ```
 LTI_TOOL_CONFIGURATION = {
     'title': '<your lti provider title>',
-    'description': '<your description>'
+    'description': '<your description>',
     'launch_url': 'lti/',
     'embed_url': '<the view endpoint for an embed tool>' or '',
     'embed_icon_url': '<the icon url to use for an embed tool>' or '',
     'embed_tool_id': '<the embed tool id>' or '',
     'landing_url': '<the view landing page>',
-    'course_aware': '<True or False>',
-    'course_navigation': '<True or False>',
-    'assignment_new_tab': '<True or False>',
+    'course_aware': <True or False>,
+    'course_navigation': <True or False>,
+    'new_tab': <True or False>,
     'frame_width': <width in pixels>,
     'frame_height': <height in pixels>
 }
 
-To pass through extra LTI parameters to your provider, populate the LTI_EXTRA_PARAMETERS variable in your settings.py
+To pass through extra LTI parameters to your provider, populate the LTI_EXTRA_PARAMETERS variable in your settings.py.
+This is useful for custom parameters you may specify at installation time.
 
 LTI_EXTRA_PARAMETERS = ['lti_version']
 
