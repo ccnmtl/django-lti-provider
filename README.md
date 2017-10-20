@@ -81,7 +81,12 @@ LTI_TOOL_CONFIGURATION = {
     'course_navigation': <True or False>,
     'new_tab': <True or False>,
     'frame_width': <width in pixels>,
-    'frame_height': <height in pixels>
+    'frame_height': <height in pixels>,
+    'assignments': {
+        '<name>': '<landing_url>',
+        '<name>': '<landing_url>',
+        '<name>': '<landing_url>'
+    }
 }
 
 To pass through extra LTI parameters to your provider, populate the LTI_EXTRA_PARAMETERS variable in your settings.py.
@@ -100,6 +105,12 @@ PYLTI_CONFIG = {
     }
 }
 
-## LMS Configuration
+## Assignments
 
-Now, add your application to your favorite LMS provider.
+Basic Assignment Configuration for Canvas
+* https://community.canvaslms.com/docs/DOC-10384-4152501360
+
+To configure multiple assignments that land in a different location than the launch_url:
+* Find the External Tool
+* Update the URL to be https://<your domain name>/lti/assignment/<assignment_name>
+* The `assignment_name` variable should match a landing_url in the LTI_TOOL_CONFIGURATION dict.

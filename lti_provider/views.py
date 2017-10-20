@@ -58,20 +58,23 @@ class LTIRoutingView(LTIAuthMixin, View):
 
         return url
 
-    def post(self, request):
+    def post(self, request, assignment_name=None):
         if request.POST.get('ext_content_intended_use', '') == 'embed':
             domain = self.request.get_host()
             url = '%s://%s/%s?return_url=%s' % (
                 self.request.scheme, domain,
                 settings.LTI_TOOL_CONFIGURATION['embed_url'],
                 request.POST.get('launch_presentation_return_url'))
+        elif assignment_name:
+            assignments = settings.LTI_TOOL_CONFIGURATION['assignments']
+            url = assignments[assignment_name]
         elif settings.LTI_TOOL_CONFIGURATION['new_tab']:
             url = reverse('lti-landing-page')
         else:
             url = settings.LTI_TOOL_CONFIGURATION['landing_url'].format(
                 self.request.scheme, self.request.get_host())
 
-        # custom parameters can be used to support multiple assignments
+        # custom parameters can be tacked on here
         url = self.add_custom_parameters(url)
 
         return HttpResponseRedirect(url)

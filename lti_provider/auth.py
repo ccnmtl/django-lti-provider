@@ -11,7 +11,7 @@ class LTIBackend(object):
         # create the user if necessary
         user = User(username=username, password='LTI user')
         user.set_unusable_password()
-        user.email = lti.user_email(request)
+        user.email = lti.user_email(request) or ''
 
         name = HumanName(lti.user_fullname(request))
         user.first_name = name.first[:30]
