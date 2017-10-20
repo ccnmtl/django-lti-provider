@@ -21,4 +21,3 @@ deploy:
   on:
     tags: true
     repo: ccnmtl/django-lti-provider
-
