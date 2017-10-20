@@ -1,5 +1,3 @@
-Important: More documentation and examples to come. This is a work in progress as code is generalized from another application. This library is not yet on pypi, but will be soon.
-
 # Documentation
 
 django-lti-provider provides LTI functionality for the Django web framework. This
@@ -15,18 +13,19 @@ django-lti-provider offers:
 * a templated view for config.xml generation
 * a templated landing page view for those LMS who do not have a 'launch in new tab' option, i.e. Canvas
 * support for Canvas' [embedded tool extensions](https://canvas.instructure.com/doc/api/file.editor_button_tools.html)
+* routing for multiple external assignment end points.
 
-The library is used at Columbia University's [Center for Teaching And Learning](http://ctl.columbia.edu) in [Mediathread](http://www.github.com/ccnmtl/mediathread).
+The library is used at Columbia University's [Center for Teaching And Learning](http://ctl.columbia.edu).
 
-See an example Django app using the library at https://github.com/ccnmtl/django-lti-provider-example.
+See an example Django app using the library at [Django LTI Provider Example](https://github.com/ccnmtl/django-lti-provider-example).
 
 ## Installation
 
-You can install ```django-lti-provider``` through ```pip```::
+You can install ```django-lti-provider``` through ```pip```:
 ```python
 $ pip install django-lti-provider
 ```
-In your project, add ```django-lti-provider``` to your ```requirements.txt```.
+Or, if you're using virtualenv, add ```django-lti-provider``` to your ```requirements.txt```.
 
 Add to ```INSTALLED_APPS``` in your ```settings.py```::
 ```python
@@ -65,7 +64,7 @@ Complete a migration
 ```
 
 The ``LTI_TOOL_CONFIGURATION`` variable in your ``settings.py`` allows you to
-configure your application's config.xml. ([Edu Apps](https://www.edu-apps.org/code.html) has good documentation
+configure your application's config.xml and set other options for the library. ([Edu Apps](https://www.edu-apps.org/code.html) has good documentation
 on configuring an lti provider through xml.)
 ```
 LTI_TOOL_CONFIGURATION = {
@@ -89,14 +88,16 @@ LTI_TOOL_CONFIGURATION = {
 }
 ```
 
-To pass through extra LTI parameters to your provider, populate the LTI_EXTRA_PARAMETERS variable in your settings.py.
+To pass through extra LTI parameters to your provider, populate the `LTI_EXTRA_PARAMETERS` variable in your `settings.py`.
 This is useful for custom parameters you may specify at installation time.
-
-LTI_EXTRA_PARAMETERS = ['lti_version']
+```python
+LTI_EXTRA_PARAMETERS = ['lti_version']  # example
+```
 
 The ``PYLTI_CONFIG`` variable in your ``settings.py`` configures the 
 application consumers and secrets.
 
+```python
 PYLTI_CONFIG = {
     'consumers': {
         '<random number string>': {
@@ -104,13 +105,15 @@ PYLTI_CONFIG = {
         }
     }
 }
+```
 
 ## Assignments
 
-Basic Assignment Configuration for Canvas
-* https://community.canvaslms.com/docs/DOC-10384-4152501360
-
-To configure multiple assignments that land in a different location than the launch_url:
-* Find the External Tool
+To support multiple assignments: 
+* Create multiple endpoint views
+* Add the assignment urls to the `LTI_TOOL_CONFIGURATION['assignments'] map
+* Add an assignment, using the External Tool option.
+   * Canvas: https://community.canvaslms.com/docs/DOC-10384-4152501360
 * Update the URL to be https://<your domain name>/lti/assignment/<assignment_name>
 * The `assignment_name` variable should match a landing_url in the LTI_TOOL_CONFIGURATION dict.
+* Full example here: [Django LTI Provider Example](https://github.com/ccnmtl/django-lti-provider-example).
