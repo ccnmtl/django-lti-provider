@@ -1,4 +1,5 @@
-from django.test.testcases import TestCase
+from django.contrib.sessions.middleware import SessionMiddleware
+from django.test import TestCase, RequestFactory
 from pylti.common import LTI_SESSION_KEY
 
 from lti_provider.lti import LTI
@@ -24,15 +25,23 @@ TEST_LTI_TOOL_CONFIGURATION = {
 class LTIViewTest(TestCase):
 
     def setUp(self):
+        self.request = RequestFactory()
+        self.request.COOKIES = {}
+        middleware = SessionMiddleware()
+        middleware.process_request(self.request)
+        self.request.session.save()
+
+        for prop, value in BASE_LTI_PARAMS.items():
+            self.request.session[prop] = value
+
         self.lti = LTI('initial', 'any')
-        self.lti.lti_params = BASE_LTI_PARAMS.copy()
 
     def test_join_groups(self):
         mixin = LTIAuthMixin()
         ctx = LTICourseContextFactory()
         user = UserFactory()
 
-        mixin.join_groups(self.lti, ctx, user)
+        mixin.join_groups(self.request, self.lti, ctx, user)
         self.assertTrue(user in ctx.group.user_set.all())
         self.assertTrue(user in ctx.faculty_group.user_set.all())
 
@@ -43,7 +52,7 @@ class LTIViewTest(TestCase):
         self.assertEquals(response.status_code, 200)
 
         self.assertTrue('Authentication Failed' in response.content)
-        self.assertFalse(request.session[LTI_SESSION_KEY])
+        self.assertFalse(request.session.get(LTI_SESSION_KEY, False))
 
     def test_launch_invalid_course(self):
         with self.settings(
