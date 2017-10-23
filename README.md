@@ -114,6 +114,6 @@ To support multiple assignments:
 * Add the assignment urls to the `LTI_TOOL_CONFIGURATION['assignments'] map
 * Add an assignment, using the External Tool option.
    * Canvas: https://community.canvaslms.com/docs/DOC-10384-4152501360
-* Update the URL to be https://<your domain name>/lti/assignment/<assignment_name>
+* Update the URL to be `https://<your domain name>/lti/assignment/<assignment_name>`
 * The `assignment_name` variable should match a landing_url in the LTI_TOOL_CONFIGURATION dict.
 * Full example here: [Django LTI Provider Example](https://github.com/ccnmtl/django-lti-provider-example).
