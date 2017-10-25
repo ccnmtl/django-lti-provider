@@ -37,7 +37,6 @@ Add to ```INSTALLED_APPS``` in your ```settings.py```::
 * Django
 * nameparser
 * httplib2
-* oauth
 * oauth2
 * oauthlib
 * pylti
