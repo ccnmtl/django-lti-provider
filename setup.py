@@ -37,7 +37,6 @@ setup(
         "Django",
         "nameparser",
         "httplib2",
-        "oauth",
         "oauth2",
         "oauthlib",
         "pylti",
