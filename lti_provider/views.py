@@ -23,19 +23,21 @@ class LTIConfigView(TemplateView):
         domain = self.request.get_host()
         launch_url = '%s://%s/%s' % (
             self.request.scheme, domain,
-            settings.LTI_TOOL_CONFIGURATION['launch_url'])
+            settings.LTI_TOOL_CONFIGURATION.get('launch_url'))
 
         ctx = {
             'domain': domain,
             'launch_url': launch_url,
-            'title': settings.LTI_TOOL_CONFIGURATION['title'],
-            'description': settings.LTI_TOOL_CONFIGURATION['description'],
+            'title': settings.LTI_TOOL_CONFIGURATION.get('title'),
+            'description': settings.LTI_TOOL_CONFIGURATION.get('description'),
             'embed_icon_url':
-                settings.LTI_TOOL_CONFIGURATION['embed_icon_url'],
-            'embed_tool_id': settings.LTI_TOOL_CONFIGURATION['embed_tool_id'],
-            'frame_width': settings.LTI_TOOL_CONFIGURATION['frame_width'],
-            'frame_height': settings.LTI_TOOL_CONFIGURATION['frame_height'],
-            'navigation': settings.LTI_TOOL_CONFIGURATION['navigation']
+                settings.LTI_TOOL_CONFIGURATION.get('embed_icon_url'),
+            'embed_tool_id': settings.LTI_TOOL_CONFIGURATION.get(
+                'embed_tool_id'),
+            'frame_width': settings.LTI_TOOL_CONFIGURATION.get('frame_width'),
+            'frame_height': settings.LTI_TOOL_CONFIGURATION.get(
+                'frame_height'),
+            'navigation': settings.LTI_TOOL_CONFIGURATION.get('navigation')
         }
         return ctx
 
@@ -63,12 +65,12 @@ class LTIRoutingView(LTIAuthMixin, View):
             domain = self.request.get_host()
             url = '%s://%s/%s?return_url=%s' % (
                 self.request.scheme, domain,
-                settings.LTI_TOOL_CONFIGURATION['embed_url'],
+                settings.LTI_TOOL_CONFIGURATION.get('embed_url'),
                 request.POST.get('launch_presentation_return_url'))
         elif assignment_name:
             assignments = settings.LTI_TOOL_CONFIGURATION['assignments']
             url = assignments[assignment_name]
-        elif settings.LTI_TOOL_CONFIGURATION['new_tab']:
+        elif settings.LTI_TOOL_CONFIGURATION.get('new_tab'):
             url = reverse('lti-landing-page')
         else:
             url = settings.LTI_TOOL_CONFIGURATION['landing_url'].format(
@@ -90,7 +92,7 @@ class LTILandingPage(LTIAuthMixin, TemplateView):
 
         return {
             'landing_url': url,
-            'title': settings.LTI_TOOL_CONFIGURATION['title']
+            'title': settings.LTI_TOOL_CONFIGURATION.get('title')
         }
 
 
@@ -133,7 +135,7 @@ class LTICourseEnableView(LTIAuthMixin, View):
         messages.add_message(
             self.request, messages.INFO,
             '<strong>Success!</strong> {} is connected to {}.'.format(
-                title, settings.LTI_TOOL_CONFIGURATION['title']))
+                title, settings.LTI_TOOL_CONFIGURATION.get('title')))
 
         url = reverse('lti-landing-page', args=[course_context])
         return HttpResponseRedirect(url)
