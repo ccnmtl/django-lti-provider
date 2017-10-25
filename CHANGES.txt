@@ -1,5 +1,9 @@
+0.2.1
+===================
+* Python 3 fix: items() instead of iteritems()
+
 0.2.0  (2017-10-20)
-=================
+===================
 * Session awareness
 * Refactoring auth failure and course configuration paths
 * Add multiple assignment routing
@@ -7,5 +11,5 @@
 * pypi release
 
 0.1.0  (2016-07-09)
-=================
+===================
 * initial release

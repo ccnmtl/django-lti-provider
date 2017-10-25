@@ -57,7 +57,7 @@ def generate_lti_request(course_context=None, provider=None, use=None):
     url_parts = urlparse(signature[0])
     query_string = parse_qs(url_parts.query, keep_blank_values=True)
     verify_params = dict()
-    for key, value in query_string.iteritems():
+    for key, value in query_string.items():
         verify_params[key] = value[0]
 
     params.update(verify_params)

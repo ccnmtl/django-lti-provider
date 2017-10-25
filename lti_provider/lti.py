@@ -90,9 +90,9 @@ class LTI(object):
         :raises: LTIException is request validation failed
         """
         if request.method == 'POST':
-            params = dict(request.POST.iteritems())
+            params = dict(request.POST.items())
         else:
-            params = dict(request.GET.iteritems())
+            params = dict(request.GET.items())
 
         try:
             verify_request_common(self.consumers(),
