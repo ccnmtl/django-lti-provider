@@ -8,6 +8,7 @@ from django.core.urlresolvers import reverse
 from django.http.response import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
 from django.views.generic.base import View, TemplateView
 from lti_provider.mixins import LTIAuthMixin
 from lti_provider.models import LTICourseContext
@@ -45,6 +46,10 @@ class LTIConfigView(TemplateView):
 class LTIRoutingView(LTIAuthMixin, View):
     request_type = 'initial'
     role_type = 'any'
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, *args, **kwargs):
+        return super(LTIRoutingView, self).dispatch(*args, **kwargs)
 
     def add_custom_parameters(self, url):
         if not hasattr(settings, 'LTI_EXTRA_PARAMETERS'):
