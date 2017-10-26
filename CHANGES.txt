@@ -1,6 +1,7 @@
 0.2.1
 ===================
 * Python 3 fix: items() instead of iteritems()
+* Make LTIRoutingView exempt from CSRF checks
 
 0.2.0  (2017-10-20)
 ===================
