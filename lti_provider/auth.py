@@ -1,6 +1,7 @@
 from hashlib import sha1
 
 from django.contrib.auth.models import User
+from django.utils.encoding import force_bytes
 from nameparser import HumanName
 from pylti.common import LTIException
 
@@ -25,7 +26,7 @@ class LTIBackend(object):
         # generate a username to avoid overlap with existing system usernames
         # sha1 hash result + trunc to 30 chars should result in a valid
         # username with low-ish-chance of collisions
-        uid = lti.consumer_user_id(request)
+        uid = force_bytes(lti.consumer_user_id(request))
         return sha1(uid).hexdigest()[:30]
 
     def get_username(self, request, lti):
