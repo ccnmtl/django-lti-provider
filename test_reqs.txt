@@ -1,4 +1,4 @@
-Django==1.11.6
+Django==1.11.7
 six==1.11.0
 nameparser==0.5.3
 httplib2==0.10.3
