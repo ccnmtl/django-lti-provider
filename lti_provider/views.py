@@ -170,7 +170,7 @@ class LTIPostGrade(LTIAuthMixin, View):
                 self.lti.lis_outcome_service_url(request), xml):
 
             # Something went wrong, display an error.
-            # Is 505 the right thing to do here?
+            # Is 500 the right thing to do here?
             raise LTIPostMessageException('Post grade failed')
         else:
             redirect_url = request.POST.get('next', '/')
