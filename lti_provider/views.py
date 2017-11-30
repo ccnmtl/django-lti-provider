@@ -155,7 +155,7 @@ class LTIPostGrade(LTIAuthMixin, View):
         """
         Post grade to LTI consumer using XML
 
-        :param: score: 0 <= score <= 1
+        :param: score: 0 <= score <= 1. (Score MUST be between 0 and 1)
         :return: True if post successful and score valid
         :exception: LTIPostMessageException if call failed
         """
