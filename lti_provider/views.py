@@ -172,9 +172,16 @@ class LTIPostGrade(LTIAuthMixin, View):
             self.lti.consumers(), self.lti.oauth_consumer_key(request),
                 self.lti.lis_outcome_service_url(request), xml):
 
+            msg = ('An error occurred while saving your score. '
+                   'Please try again.')
+            messages.add_message(request, messages.ERROR, msg)
+
             # Something went wrong, display an error.
             # Is 500 the right thing to do here?
             raise LTIPostMessageException('Post grade failed')
         else:
+            msg = ('Your score was submitted. Great job!')
+            messages.add_message(request, messages.INFO, msg)
+
             redirect_url = request.POST.get('next', '/')
             return HttpResponseRedirect(redirect_url)
