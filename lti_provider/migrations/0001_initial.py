@@ -18,9 +18,12 @@ class Migration(migrations.Migration):
                                         auto_created=True, primary_key=True)),
                 ('lms_context_id', models.TextField()),
                 ('faculty_group', models.ForeignKey(
-                 related_name='course_faculty_group', to='auth.Group')),
-                ('group', models.ForeignKey(related_name='course_group',
-                                            to='auth.Group')),
+                    on_delete=models.CASCADE,
+                    related_name='course_faculty_group', to='auth.Group')),
+                ('group', models.ForeignKey(
+                    on_delete=models.CASCADE,
+                    related_name='course_group',
+                    to='auth.Group')),
             ],
         ),
     ]

@@ -1,5 +1,8 @@
-import urllib
-from urlparse import parse_qs, urlparse
+try:
+    from urllib.parse import parse_qs, urlparse, urlencode
+except ImportError:
+    from urllib import urlencode
+    from urlparse import parse_qs, urlparse
 
 from django.contrib.auth.models import User, Group, AnonymousUser
 from django.contrib.sessions.middleware import SessionMiddleware
@@ -51,7 +54,7 @@ def generate_lti_request(course_context=None, provider=None, use=None):
 
     signature = client.sign(
         'http://testserver/lti/',
-        http_method='POST', body=urllib.urlencode(params),
+        http_method='POST', body=urlencode(params),
         headers={'Content-Type': CONTENT_TYPE_FORM_URLENCODED})
 
     url_parts = urlparse(signature[0])

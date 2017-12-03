@@ -5,7 +5,7 @@ from pylti.common import LTINotInSessionException
 register = template.Library()
 
 
-@register.assignment_tag
+@register.simple_tag
 def lti_session(request):
     try:
         lti = LTI('session', 'any')

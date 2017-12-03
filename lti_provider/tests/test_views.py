@@ -1,5 +1,8 @@
 from django.contrib.sessions.middleware import SessionMiddleware
-from django.core.urlresolvers import reverse
+try:
+    from django.urls import reverse
+except ImportError:
+    from django.core.urlresolvers import reverse
 from django.test import TestCase, RequestFactory
 from lti_provider.lti import LTI
 from lti_provider.tests.factories import LTICourseContextFactory, \
