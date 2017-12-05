@@ -1,6 +1,7 @@
 """ run tests for lti_provider
 
 $ virtualenv ve
+$ ./ve/bin/pip install Django
 $ ./ve/bin/pip install -r test_reqs.txt
 $ ./ve/bin/python runtests.py
 """
