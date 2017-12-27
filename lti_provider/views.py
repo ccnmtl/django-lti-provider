@@ -12,15 +12,14 @@ from django.views.generic.base import View, TemplateView
 
 from lti_provider.mixins import LTIAuthMixin
 from lti_provider.models import LTICourseContext
-from pylti.common import \
-    generate_request_xml, LTIPostMessageException, post_message
-from xml.etree import ElementTree as etree
+from pylti.common import LTIPostMessageException, post_message
 
 
 try:
     from django.urls import reverse
 except ImportError:
     from django.core.urlresolvers import reverse
+
 
 class LTIConfigView(TemplateView):
     template_name = 'lti_provider/config.xml'
