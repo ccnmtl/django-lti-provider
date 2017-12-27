@@ -100,7 +100,9 @@ class LTILandingPage(LTIAuthMixin, TemplateView):
 
         return {
             'landing_url': url,
-            'title': settings.LTI_TOOL_CONFIGURATION.get('title')
+            'title': settings.LTI_TOOL_CONFIGURATION.get('title'),
+            'is_instructor': self.lti.is_instructor(self.request),
+            'is_administrator': self.lti.is_administrator(self.request),
         }
 
 
