@@ -4,20 +4,23 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group
-try:
-    from django.urls import reverse
-except ImportError:
-    from django.core.urlresolvers import reverse
 from django.http.response import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic.base import View, TemplateView
+
 from lti_provider.mixins import LTIAuthMixin
 from lti_provider.models import LTICourseContext
 from pylti.common import \
     generate_request_xml, LTIPostMessageException, post_message
+from xml.etree import ElementTree as etree
 
+
+try:
+    from django.urls import reverse
+except ImportError:
+    from django.core.urlresolvers import reverse
 
 class LTIConfigView(TemplateView):
     template_name = 'lti_provider/config.xml'
@@ -167,9 +170,12 @@ class LTIPostGrade(LTIAuthMixin, View):
         except ValueError:
             score = 0
 
-        xml = generate_request_xml(
+        redirect_url = request.POST.get('next', '/')
+
+        xml = self.lti.generate_request_xml(
             self.message_identifier(), 'replaceResult',
-            self.lti.lis_result_sourcedid(request), score)
+            self.lti.lis_result_sourcedid(request), score,
+            request.build_absolute_uri(redirect_url))
 
         if not post_message(
             self.lti.consumers(), self.lti.oauth_consumer_key(request),
@@ -186,5 +192,4 @@ class LTIPostGrade(LTIAuthMixin, View):
             msg = ('Your score was submitted. Great job!')
             messages.add_message(request, messages.INFO, msg)
 
-            redirect_url = request.POST.get('next', '/')
             return HttpResponseRedirect(redirect_url)

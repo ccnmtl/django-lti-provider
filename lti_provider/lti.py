@@ -1,9 +1,10 @@
 from django.conf import settings
+
+from lti_provider.models import LTICourseContext
 from pylti.common import (
     LTIException, LTINotInSessionException, LTI_SESSION_KEY,
     verify_request_common, LTIRoleException, LTI_ROLES, LTI_PROPERTY_LIST)
-
-from lti_provider.models import LTICourseContext
+from xml.etree import ElementTree as etree
 
 
 LTI_PROPERTY_LIST_EX = [
@@ -208,3 +209,52 @@ class LTI(object):
 
     def sis_course_id(self, request):
         return request.session.get('lis_course_offering_sourcedid', None)
+
+    def generate_request_xml(self, message_identifier_id, operation,
+                             lis_result_sourcedid, score, launch_url):
+        # pylint: disable=too-many-locals
+        """
+        Generates LTI 1.1 XML for posting result to LTI consumer.
+
+        :param message_identifier_id:
+        :param operation:
+        :param lis_result_sourcedid:
+        :param score:
+        :return: XML string
+        """
+        root = etree.Element(u'imsx_POXEnvelopeRequest',
+                             xmlns=u'http://www.imsglobal.org/services/'
+                                   u'ltiv1p1/xsd/imsoms_v1p0')
+
+        header = etree.SubElement(root, 'imsx_POXHeader')
+        header_info = etree.SubElement(header, 'imsx_POXRequestHeaderInfo')
+        version = etree.SubElement(header_info, 'imsx_version')
+        version.text = 'V1.0'
+        message_identifier = etree.SubElement(header_info,
+                                              'imsx_messageIdentifier')
+        message_identifier.text = message_identifier_id
+        body = etree.SubElement(root, 'imsx_POXBody')
+        xml_request = etree.SubElement(
+            body, '%s%s' % (operation, 'Request'))
+        record = etree.SubElement(xml_request, 'resultRecord')
+
+        guid = etree.SubElement(record, 'sourcedGUID')
+
+        sourcedid = etree.SubElement(guid, 'sourcedId')
+        sourcedid.text = lis_result_sourcedid
+        if score is not None:
+            result = etree.SubElement(record, 'result')
+            result_score = etree.SubElement(result, 'resultScore')
+            language = etree.SubElement(result_score, 'language')
+            language.text = 'en'
+            text_string = etree.SubElement(result_score, 'textString')
+            text_string.text = score.__str__()
+            if launch_url:
+                result_data = etree.SubElement(result, 'resultData')
+                lti_launch_url = etree.SubElement(
+                    result_data, 'ltiLaunchUrl')
+                lti_launch_url.text = launch_url
+        ret = "<?xml version='1.0' encoding='utf-8'?>\n{}".format(
+            etree.tostring(root, encoding='utf-8').decode('utf-8'))
+
+        return ret
