@@ -170,11 +170,11 @@ class LTIPostGrade(LTIAuthMixin, View):
             score = 0
 
         redirect_url = request.POST.get('next', '/')
+        launch_url = request.POST.get('launch_url', None)
 
         xml = self.lti.generate_request_xml(
             self.message_identifier(), 'replaceResult',
-            self.lti.lis_result_sourcedid(request), score,
-            request.build_absolute_uri(redirect_url))
+            self.lti.lis_result_sourcedid(request), score, launch_url)
 
         if not post_message(
             self.lti.consumers(), self.lti.oauth_consumer_key(request),
