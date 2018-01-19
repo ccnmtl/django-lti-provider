@@ -1,3 +1,7 @@
+0.3.1 (2018-01-19)
+===================
+* Change how incoming requests are assessed/verified
+
 0.3.0 (2017-12-05)
 ===================
 * Add django 2.0 support
