@@ -59,6 +59,16 @@ class LTITest(TestCase):
         with self.settings(PYLTI_CONFIG={'consumers': CONSUMERS}):
             self.assertEquals(self.lti.consumers(), CONSUMERS)
 
+    def test_params(self):
+        factory = RequestFactory()
+        request = factory.post('/', {'post': 'data'})
+        params = self.lti._params(request)
+        self.assertTrue('post' in params)
+
+        request = factory.post('/', {'get': 'data'})
+        params = self.lti._params(request)
+        self.assertTrue('get' in params)
+
     def test_verify_any(self):
         lti = LTI('any', 'any')
         request = generate_lti_request()
