@@ -63,16 +63,29 @@ class LTI(object):
 
         return True
 
+    def _params(self, request):
+        if request.method == 'POST':
+            return dict(request.POST.items())
+        else:
+            return dict(request.GET.items())
+
     def _verify_any(self, request):
         """
-        Verify that request is in session or initial request
+        Verify that request is in session or initial request.
+        Guess what type of request is being sent over based on
+        the request params.
 
         :raises: LTIException
         """
-        try:
-            self._verify_session(request)
-        except LTINotInSessionException:
+
+        # if an oauth_consumer_key is present, assume this is an initial
+        # launch request and complete a full verification
+        # otherwise, just check the session for the LTI_SESSION_KEY
+        params = self._params(request)
+        if 'oauth_consumer_key' in params:
             self._verify_request(request)
+        else:
+            self._verify_session(request)
 
     @staticmethod
     def _verify_session(request):
@@ -86,16 +99,12 @@ class LTI(object):
 
     def _verify_request(self, request):
         """
-        Verify initial LTI request
+        Verify LTI request
 
         :raises: LTIException is request validation failed
         """
-        if request.method == 'POST':
-            params = dict(request.POST.items())
-        else:
-            params = dict(request.GET.items())
-
         try:
+            params = self._params(request)
             verify_request_common(self.consumers(),
                                   request.build_absolute_uri(),
                                   request.method, request.META,
