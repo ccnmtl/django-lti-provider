@@ -9,7 +9,7 @@ class LTICourseContext(models.Model):
     faculty_group = models.ForeignKey(Group,
                                       related_name='course_faculty_group',
                                       on_delete=models.CASCADE)
-    lms_course_context = models.TextField(null=True, unique=True)
+    lms_course_context = models.TextField(null=True, unique=True, max_length=256)
 
     class Meta:
         unique_together = (('group', 'faculty_group'),)
