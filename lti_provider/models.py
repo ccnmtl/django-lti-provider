@@ -9,7 +9,6 @@ class LTICourseContext(models.Model):
     faculty_group = models.ForeignKey(Group,
                                       related_name='course_faculty_group',
                                       on_delete=models.CASCADE)
-                                      
     lms_course_context = models.CharField(null=True,
                                           unique=True,
                                           max_length=255)
