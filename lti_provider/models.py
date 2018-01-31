@@ -10,7 +10,9 @@ class LTICourseContext(models.Model):
                                       related_name='course_faculty_group',
                                       on_delete=models.CASCADE)
                                       
-    lms_course_context = models.CharField(null=True, unique=True, max_length=255)
+    lms_course_context = models.CharField(null=True,
+                                          unique=True,
+                                          max_length=255)
 
     class Meta:
         unique_together = (('group', 'faculty_group'),)
