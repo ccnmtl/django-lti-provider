@@ -4,10 +4,10 @@ Columbia University Center for Teaching & Learning
 
 Original Authors
 ----------------
-* Susan Dreher (sdreher@columbia.edu)
-* Nik Nyby (nnyby@columbia.edu)
+* Susan Dreher (@sdreher)
+* Nik Nyby (@nikolas)
 
 Contributors
 ----------------
 A list of much-appreciated contributors who have submitted patches and reported bugs:
-* @ptitloup 
+* Nicolas Can, University of Lille, France (@ptitloup)
