@@ -4,8 +4,8 @@ Columbia University Center for Teaching & Learning
 
 Original Authors
 ----------------
-Susan Dreher (sdreher@columbia.edu)
-Nik Nyby (nnyby@columbia.edu)
+* Susan Dreher (sdreher@columbia.edu)
+* Nik Nyby (nnyby@columbia.edu)
 
 Contributors
 ----------------
