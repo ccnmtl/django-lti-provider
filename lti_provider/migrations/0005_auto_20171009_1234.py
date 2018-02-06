@@ -5,6 +5,26 @@ from __future__ import unicode_literals
 from django.db import migrations, models
 
 
+class MySQLAddLMSCourseContext(migrations.AddField):
+
+    def database_forwards(
+            self, app_label, schema_editor, from_state, to_state):
+
+        if schema_editor.connection.vendor.startswith("mysql"):
+            super(MySQLAddLMSCourseContext, self).database_forwards(
+                app_label, schema_editor, from_state, to_state)
+
+
+class PostgresAddLMSCourseContext(migrations.AddField):
+
+    def database_forwards(
+            self, app_label, schema_editor, from_state, to_state):
+
+        if schema_editor.connection.vendor.startswith("postgres"):
+            super(PostgresAddLMSCourseContext, self).database_forwards(
+                app_label, schema_editor, from_state, to_state)
+
+
 class Migration(migrations.Migration):
 
     dependencies = [
@@ -20,9 +40,14 @@ class Migration(migrations.Migration):
             model_name='lticoursecontext',
             name='uuid',
         ),
-        migrations.AddField(
+        PostgresAddLMSCourseContext(
             model_name='lticoursecontext',
             name='lms_course_context',
-            field=models.TextField(null=True, unique=True),
+            field=models.TextField(null=True, unique=True)
         ),
+        MySQLAddLMSCourseContext(
+            model_name='lticoursecontext',
+            name='lms_course_context',
+            field=models.CharField(max_length=255, null=True, unique=True)
+        )
     ]
