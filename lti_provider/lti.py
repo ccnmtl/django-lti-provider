@@ -17,8 +17,8 @@ LTI_PROPERTY_LIST_EX = getattr(settings,
                                 ])
 
 LTI_PROPERTY_USER_USERNAME = getattr(settings, 
-                                'LTI_PROPERTY_USER_USERNAME', 
-                                'custom_canvas_user_login_id')
+                                     'LTI_PROPERTY_USER_USERNAME', 
+                                     'custom_canvas_user_login_id')
 
 
 class LTI(object):
