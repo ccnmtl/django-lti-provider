@@ -17,5 +17,5 @@ flake8==3.5.0
 django-jenkins==0.110.0
 pep8==1.7.1
 pyflakes==1.6.0
-pytz==2017.3
+pytz==2018.3
 configparser==3.5.0
