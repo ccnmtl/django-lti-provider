@@ -20,6 +20,7 @@ LTI_PROPERTY_USER_USERNAME = getattr(settings,
                                 'LTI_PROPERTY_USER_USERNAME', 
                                 'custom_canvas_user_login_id')
 
+
 class LTI(object):
     """
     LTI Object represents abstraction of current LTI session. It provides
