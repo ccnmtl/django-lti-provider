@@ -7,17 +7,17 @@ from pylti.common import (
 from xml.etree import ElementTree as etree
 
 
-LTI_PROPERTY_LIST_EX = getattr(settings, 
-                                'LTI_PROPERTY_LIST_EX', 
-                                [
-                                    'custom_canvas_user_login_id',
-                                    'context_title',
-                                    'lis_course_offering_sourcedid',
-                                    'custom_canvas_api_domain'
-                                ])
+LTI_PROPERTY_LIST_EX = getattr(settings,
+                               'LTI_PROPERTY_LIST_EX',
+                               [
+                                   'custom_canvas_user_login_id',
+                                   'context_title',
+                                   'lis_course_offering_sourcedid',
+                                   'custom_canvas_api_domain'
+                               ])
 
-LTI_PROPERTY_USER_USERNAME = getattr(settings, 
-                                     'LTI_PROPERTY_USER_USERNAME', 
+LTI_PROPERTY_USER_USERNAME = getattr(settings,
+                                     'LTI_PROPERTY_USER_USERNAME',
                                      'custom_canvas_user_login_id')
 
 
