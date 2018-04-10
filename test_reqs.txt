@@ -3,7 +3,7 @@ nameparser==0.5.6
 httplib2==0.11.3
 oauth2==1.9.0.post1
 oauthlib==2.0.7
-pylti==0.5.1
+pylti==0.6.0
 ipaddress==1.0.19
 python-dateutil==2.7.2
 text-unidecode==1.2  # for faker
