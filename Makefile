@@ -23,7 +23,7 @@ $(PY_SENTINAL):
 	rm -rf $(VE)
 	$(SYS_PYTHON) $(VIRTUALENV) --extra-search-dir=$(SUPPORT_DIR) $(VE)
 	$(PIP) install wheel==$(WHEEL_VERSION)
-	$(PIP) install --use-wheel --no-deps --requirement $(REQUIREMENTS)
+	$(PIP) install --no-deps --requirement $(REQUIREMENTS)
 	touch $@
 
 install-django: $(PY_SENTINAL)
