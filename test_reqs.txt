@@ -5,7 +5,7 @@ oauth2==1.9.0.post1
 oauthlib==2.0.7
 pylti==0.6.0
 ipaddress==1.0.21
-python-dateutil==2.7.2
+python-dateutil==2.7.3
 text-unidecode==1.2  # for faker
 faker==0.8.13
 factory-boy==2.10.0
