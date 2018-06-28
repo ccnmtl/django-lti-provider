@@ -79,11 +79,12 @@ LTI_TOOL_CONFIGURATION = {
     'new_tab': <True or False>,
     'frame_width': <width in pixels>,
     'frame_height': <height in pixels>,
+    'custom_fields': <dictionary>,
     'assignments': {
         '<name>': '<landing_url>',
         '<name>': '<landing_url>',
-        '<name>': '<landing_url>'
-    }
+        '<name>': '<landing_url>',
+    },
 }
 ```
 
