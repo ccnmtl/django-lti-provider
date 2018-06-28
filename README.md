@@ -87,7 +87,7 @@ LTI_TOOL_CONFIGURATION = {
 }
 ```
 
-To stash custom properties in your session, populate the `LTI_PROPERTY_LIST_EX` variable in your `settings.py`. This is useful for LMS specific `custom_x` parameters that will be needed later. The default variable value is: `custom_canvas_user_login_id`, `custom_canvas_api_domain`, `context_title`, `lis_course_offering_sourcedid`, `custom_canvas_api_domain`. 
+To stash custom properties in your session, populate the `LTI_PROPERTY_LIST_EX` variable in your `settings.py`. This is useful for LMS specific `custom_x` parameters that will be needed later. The default value for `LTI_PROPERTY_LIST_EX` is: `['custom_canvas_user_login_id', 'context_title', 'lis_course_offering_sourcedid', 'custom_canvas_api_domain']`. 
 ```python
 LTI_PROPERTY_LIST_EX = ['custom_parameter1', 'custom_parameter2']
 ```
