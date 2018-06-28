@@ -23,11 +23,11 @@ LTI_PROPERTY_USER_USERNAME = getattr(settings,
 
 class LTI(object):
     """
-    LTI Object represents abstraction of current LTI session. It provides
-    callback methods and methods that allow developer to inspect
-    LTI basic-launch-request.
+    The LTI Object represents an abstraction of the current LTI
+    session. It provides callback methods and methods that allow the
+    developer to inspect LTI basic-launch-request.
 
-    This object is instantiated by the LTIMixin
+    This object is instantiated by the LTIMixin.
     """
 
     def __init__(self, request_type, role_type):
