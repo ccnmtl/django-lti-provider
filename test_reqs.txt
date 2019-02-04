@@ -19,3 +19,6 @@ pep8==1.7.1
 pyflakes==2.1.0
 pytz==2018.9
 configparser==3.7.1
+
+functools32==3.2.3-2
+entrypoints==0.3
