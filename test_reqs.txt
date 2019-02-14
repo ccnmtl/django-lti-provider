@@ -13,9 +13,13 @@ coverage==4.5.2
 mccabe==0.6.1
 pycodestyle==2.5.0
 enum34==1.1.6
-flake8==3.6.0
+flake8==3.7.5
 django-jenkins==0.110.0
 pep8==1.7.1
 pyflakes==2.1.0
 pytz==2018.9
 configparser==3.7.1
+
+typing==3.6.6
+entrypoints==0.3
+functools32==3.2.3-2; python_version < '3'
