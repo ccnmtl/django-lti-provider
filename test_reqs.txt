@@ -8,7 +8,7 @@ ipaddress==1.0.22
 python-dateutil==2.8.0
 text-unidecode==1.2  # for faker
 faker==1.0.6
-factory-boy==2.11.1
+factory-boy==2.12.0
 coverage==4.5.3
 mccabe==0.6.1
 pycodestyle==2.5.0
