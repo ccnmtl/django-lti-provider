@@ -20,6 +20,6 @@ pyflakes==2.1.1
 pytz==2019.1
 configparser==3.7.4
 
-typing==3.6.6
+typing==3.7.4
 entrypoints==0.3
 functools32==3.2.3-2; python_version < '3'
