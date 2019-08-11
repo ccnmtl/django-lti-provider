@@ -18,7 +18,7 @@ django-jenkins==0.110.0
 pep8==1.7.1
 pyflakes==2.1.1
 pytz==2019.2
-configparser==3.7.4
+configparser==3.7.5
 
 typing==3.7.4
 entrypoints==0.3
