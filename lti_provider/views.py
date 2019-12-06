@@ -7,9 +7,9 @@ from django.contrib.auth.models import Group
 from django.http.response import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.utils.decorators import method_decorator
+from django.views.decorators.clickjacking import xframe_options_exempt
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic.base import View, TemplateView
-
 from lti_provider.mixins import LTIAuthMixin
 from lti_provider.models import LTICourseContext
 from pylti.common import LTIPostMessageException, post_message
@@ -94,6 +94,7 @@ class LTIRoutingView(LTIAuthMixin, View):
         return HttpResponseRedirect(url)
 
 
+@method_decorator(xframe_options_exempt, name='dispatch')
 class LTILandingPage(LTIAuthMixin, TemplateView):
     template_name = 'lti_provider/landing_page.html'
 
@@ -110,10 +111,12 @@ class LTILandingPage(LTIAuthMixin, TemplateView):
         }
 
 
+@method_decorator(xframe_options_exempt, name='dispatch')
 class LTIFailAuthorization(TemplateView):
     template_name = 'lti_provider/fail_auth.html'
 
 
+@method_decorator(xframe_options_exempt, name='dispatch')
 class LTICourseConfigure(LTIAuthMixin, TemplateView):
     template_name = 'lti_provider/fail_course_configuration.html'
 
@@ -129,6 +132,7 @@ class LTICourseConfigure(LTIAuthMixin, TemplateView):
         }
 
 
+@method_decorator(xframe_options_exempt, name='dispatch')
 class LTICourseEnableView(LTIAuthMixin, View):
 
     @method_decorator(login_required)
