@@ -1,5 +1,6 @@
 0.3.4
 ==================
+* Add X-Frame view exceptions
 * Allow for custom field configuration in config.xml
 
 0.3.3 (2018-02-13)
