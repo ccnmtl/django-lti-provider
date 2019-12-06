@@ -50,6 +50,7 @@ class LTIConfigView(TemplateView):
         return ctx
 
 
+@method_decorator(xframe_options_exempt, name='dispatch')
 class LTIRoutingView(LTIAuthMixin, View):
     request_type = 'initial'
     role_type = 'any'
