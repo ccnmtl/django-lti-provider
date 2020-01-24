@@ -10,7 +10,7 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.clickjacking import xframe_options_exempt
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic.base import View, TemplateView
-from lti_provider.mixins import LTIAuthMixin
+from lti_provider.mixins import LTIAuthMixin, LTILoggedInMixin
 from lti_provider.models import LTICourseContext
 from pylti.common import LTIPostMessageException, post_message
 
@@ -118,7 +118,7 @@ class LTIFailAuthorization(TemplateView):
 
 
 @method_decorator(xframe_options_exempt, name='dispatch')
-class LTICourseConfigure(LTIAuthMixin, TemplateView):
+class LTICourseConfigure(LTILoggedInMixin, TemplateView):
     template_name = 'lti_provider/fail_course_configuration.html'
 
     def get_context_data(self, **kwargs):
@@ -134,7 +134,7 @@ class LTICourseConfigure(LTIAuthMixin, TemplateView):
 
 
 @method_decorator(xframe_options_exempt, name='dispatch')
-class LTICourseEnableView(LTIAuthMixin, View):
+class LTICourseEnableView(LTILoggedInMixin, View):
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):

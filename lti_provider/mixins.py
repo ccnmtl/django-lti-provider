@@ -53,3 +53,23 @@ class LTIAuthMixin(object):
 
         self.lti = lti
         return super(LTIAuthMixin, self).dispatch(request, *args, **kwargs)
+
+
+class LTILoggedInMixin(object):
+    role_type = 'any'
+    request_type = 'any'
+
+    def dispatch(self, request, *args, **kwargs):
+        lti = LTI(self.request_type, self.role_type)
+
+        # validate the user via oauth
+        user = authenticate(request=request, lti=lti)
+        if user is None:
+            lti.clear_session(request)
+            return HttpResponseRedirect(reverse('lti-fail-auth'))
+
+        # login
+        login(request, user)
+
+        self.lti = lti
+        return super(LTILoggedInMixin, self).dispatch(request, *args, **kwargs)
