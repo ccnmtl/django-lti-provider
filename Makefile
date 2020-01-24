@@ -1,9 +1,7 @@
 PY_DIRS=lti_provider
 VE ?= ./ve
-FLAKE8 ?= $(VE)/bin/flake8
 REQUIREMENTS ?= test_reqs.txt
 SYS_PYTHON ?= python3
-PIP ?= $(VE)/bin/pip
 PY_SENTINAL ?= $(VE)/sentinal
 WHEEL_VERSION ?= 0.33.6
 PIP_VERSION ?= 20.0.2
@@ -12,6 +10,16 @@ INTERFACE ?= localhost
 RUNSERVER_PORT ?= 8000
 PY_DIRS ?= $(APP)
 DJANGO ?= "Django==1.11.27"
+
+# Travis has issues here. See:
+# https://github.com/travis-ci/travis-ci/issues/9524
+ifeq ($(TRAVIS),true)
+	FLAKE8 ?= flake8
+	PIP ?= pip
+else
+	FLAKE8 ?= $(VE)/bin/flake8
+	PIP ?= $(VE)/bin/pip
+endif
 
 
 all: flake8 test
