@@ -1,23 +1,13 @@
 language: python
 dist: xenial
 python:
-  - "2.7"
   - "3.6"
 env:
   - DJANGO="Django>=1.11.0,<1.12.0"
   - DJANGO="Django>=2.0,<2.1"
   - DJANGO="Django>=2.2,<2.3"
-matrix:
-  exclude:
-  - python: "2.7"
-    env: DJANGO="Django>=2.0,<2.1"
-  - python: '2.7'
-    env: DJANGO="Django>=2.2,<2.3"
-install:
-  - make install-django
 script:
-  - make flake8
-  - make test
+  - make
 notifications:
   slack: ccnmtl:GizSNscLWJLldjQrffB8mwgm
 deploy:
