@@ -1,3 +1,9 @@
+0.4.0
+==================
+* Fix course-aware flow infinite redirect
+* Add Python3 support
+* Drop Django 2.0 from testing
+
 0.3.4
 ==================
 * Add X-Frame view exceptions
