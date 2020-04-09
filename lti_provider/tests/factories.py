@@ -5,7 +5,7 @@ except ImportError:
     from urlparse import parse_qs, urlparse
 
 from django.contrib.auth import get_user_model
-from django.contrib.auth.models import User, Group, AnonymousUser
+from django.contrib.auth.models import Group, AnonymousUser
 from django.contrib.sessions.middleware import SessionMiddleware
 from django.test.client import RequestFactory
 import factory
