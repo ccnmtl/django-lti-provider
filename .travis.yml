@@ -7,14 +7,3 @@ env:
   - DJANGO="Django>=2.2,<2.3"
 script:
   - make
-notifications:
-  slack: ccnmtl:GizSNscLWJLldjQrffB8mwgm
-deploy:
-  provider: pypi
-  distributions: sdist bdist_wheel
-  user: ctlpypi
-  password:
-    secure: Tp4CWbdGsJiEkl/vTa49ogmMVUXvOQFdj0Ce7KSrHbN0+9XJ7Wi18xLeDbSkIDYyuVysk3IiavIYWJinSc04yYfWnY1jxm7v94rmXM9RHDDq7JS+54sjKn2e/Y2wNbGWapxUvEKULeKVgGFLE0Bvili8o9NZdd4BczafzU0wAObWsE1AI0evPXT7vOYjqxX0B7Eomxeo/FlfDJSeIzZX2RVgwG7YudP3YUxySjM89TkFbmcaTBe56GoCCNr/kw2K5Bx9cjN4uw4NkBXeQQfaIhwwEbDKkYl9KCl99S4N2odNIQ/iI/kfRuhP4IkQc8fjkSTwam1223btSHAtNkUiqf28/NCEWHX24ti1pqMghGBTDXpbbFSf3ult73LZrAQacUQ4O5ReqaKfIpi+EOuWFsq3TrewiohHHmhTTFbfF/zGeAdzQeP6Q9byP5++j5lCSpz77OCGqOxE6kQRjyplTwHrP454wtaZ+mKHdAjIJIce/7EvQ/m4ffFytUKjZkO0IgxrGBacw3933Al8lNTo/ApgbvDKX8j6HFTTf1fEhWZgCvTSC8I9V5a1GANYB5bhx8xw+wyPXIZEO1+/FxNfghyHrZbf60irKq3+yFSrraAQtT8fHBUlDwtVRzL56P98yQH+hA/inUL8ualtOL/Ai0FXkdxc70d7ZQ47txD/Qew=
-  on:
-    tags: true
-    repo: ccnmtl/django-lti-provider
