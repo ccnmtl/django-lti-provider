@@ -1,4 +1,0 @@
-requirements:
-  - test_reqs.txt:
-      updates: all
-      pin: true
