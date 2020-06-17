@@ -123,6 +123,14 @@ PYLTI_CONFIG = {
 }
 ```
 
+Additionally you will need to make sure to add the following to your `settings.py` file:
+
+```
+X_FRAME_OPTIONS = "ALLOW-FROM https://<your-org-subdomain>.instructure.com"
+```
+
+This ensures that the Django application will allow requests from your orgs Canvas instance. For more on `X_FRAME_OPTIONS` please [consult here](https://docs.djangoproject.com/en/3.0/ref/clickjacking/#module-django.middleware.clickjacking). 
+
 ## Assignments
 
 To support multiple assignments: 
