@@ -93,6 +93,15 @@ To stash custom properties in your session, populate the `LTI_PROPERTY_LIST_EX` 
 LTI_PROPERTY_LIST_EX = ['custom_parameter1', 'custom_parameter2']
 ```
 
+Please note that you will need to add the following settings in your applications `settings.py`:
+
+```
+SESSION_ENGINE = "django.contrib.sessions.backends.signed_cookies"
+SESSION_COOKIE_SAMESITE = None
+```
+
+Because Canvas sends the information that we are storing in a `POST` request on the LTI launch, we need to disable the restriction on cookies only being allowed to be set from the same site. For more information on this [read here](https://docs.djangoproject.com/en/3.0/ref/settings/#session-cookie-samesite).
+
 To specify a custom username property, add the `LTI_PROPERTY_USER_USERNAME` variable to your `settings.py`. By default, `LTI_PROPERTY_USER_USERNAME` is `custom_canvas_user_login_id`. This value can vary depending on your LMS.
 
 To pass through extra LTI parameters to your provider, populate the `LTI_EXTRA_PARAMETERS` variable in your `settings.py`.
@@ -113,6 +122,14 @@ PYLTI_CONFIG = {
     }
 }
 ```
+
+Additionally you will need to make sure to add the following to your `settings.py` file:
+
+```
+X_FRAME_OPTIONS = "ALLOW-FROM https://<your-org-subdomain>.instructure.com"
+```
+
+This ensures that the Django application will allow requests from your orgs Canvas instance. For more on `X_FRAME_OPTIONS` please [consult here](https://docs.djangoproject.com/en/3.0/ref/clickjacking/#module-django.middleware.clickjacking). 
 
 ## Assignments
 
