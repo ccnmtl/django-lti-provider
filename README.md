@@ -75,7 +75,7 @@ LTI_TOOL_CONFIGURATION = {
     'embed_tool_id': '<the embed tool id>' or '',
     'landing_url': '<the view landing page>',
     'course_aware': <True or False>,
-    'navigation': <True or False>,
+    'course_navigation': <True or False>,
     'new_tab': <True or False>,
     'frame_width': <width in pixels>,
     'frame_height': <height in pixels>,
