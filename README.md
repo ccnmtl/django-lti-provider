@@ -65,7 +65,7 @@ Complete a migration
 The ``LTI_TOOL_CONFIGURATION`` variable in your ``settings.py`` allows you to
 configure your application's config.xml and set other options for the library. ([Edu Apps](https://www.edu-apps.org/code.html) has good documentation
 on configuring an lti provider through xml.)
-```
+```python
 LTI_TOOL_CONFIGURATION = {
     'title': '<your lti provider title>',
     'description': '<your description>',
@@ -75,7 +75,7 @@ LTI_TOOL_CONFIGURATION = {
     'embed_tool_id': '<the embed tool id>' or '',
     'landing_url': '<the view landing page>',
     'course_aware': <True or False>,
-    'course_navigation': <True or False>,
+    'navigation': <True or False>,
     'new_tab': <True or False>,
     'frame_width': <width in pixels>,
     'frame_height': <height in pixels>,
