@@ -43,7 +43,8 @@ class LTIConfigView(TemplateView):
             'frame_width': settings.LTI_TOOL_CONFIGURATION.get('frame_width'),
             'frame_height': settings.LTI_TOOL_CONFIGURATION.get(
                 'frame_height'),
-            'course_navigation': settings.LTI_TOOL_CONFIGURATION.get('course_navigation'),
+            'course_navigation': settings.LTI_TOOL_CONFIGURATION.get(
+                'course_navigation'),
             'custom_fields': settings.LTI_TOOL_CONFIGURATION.get(
                 'custom_fields')
         }

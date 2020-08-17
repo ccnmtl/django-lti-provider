@@ -156,7 +156,9 @@ class LTIViewTest(TestCase):
             config_xml = response.content.decode()
 
             root = ET.fromstring(config_xml)
-            course_navigation_property = root.find(".//*[@name='course_navigation']")
-            enabled = course_navigation_property.find("./*[@name='enabled']").text
+            course_navigation_property = root.find(
+                    ".//*[@name='course_navigation']")
+            enabled = course_navigation_property.find(
+                    "./*[@name='enabled']").text
 
             self.assertEqual(enabled, 'true')
