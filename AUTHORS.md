@@ -11,3 +11,5 @@ Contributors
 ----------------
 A list of much-appreciated contributors who have submitted patches and reported bugs:
 * Nicolas Can, University of Lille, France (@ptitloup)
+* Srijan Anand, Senior Backend Developer at Valiance Analytics, Noida (srijannnd)
+* AZ Vasquez (thedpws)
