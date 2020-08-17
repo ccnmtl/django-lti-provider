@@ -3,13 +3,14 @@ try:
     from django.urls import reverse
 except ImportError:
     from django.core.urlresolvers import reverse
-from django.test import TestCase, RequestFactory
+from django.test import TestCase, RequestFactory, Client
 from lti_provider.lti import LTI
 from lti_provider.tests.factories import LTICourseContextFactory, \
     UserFactory, CONSUMERS, generate_lti_request, BASE_LTI_PARAMS
 from lti_provider.views import LTIAuthMixin, LTIRoutingView
 from pylti.common import LTI_SESSION_KEY
 
+import xml.etree.ElementTree as ET
 
 TEST_LTI_TOOL_CONFIGURATION = {
     'title': 'Test Application',
@@ -145,3 +146,17 @@ class LTIViewTest(TestCase):
             self.assertEquals(user.get_full_name(), 'Foo Baz')
             self.assertTrue(user in ctx.group.user_set.all())
             self.assertTrue(user in ctx.faculty_group.user_set.all())
+
+    def test_course_navigation(self):
+        with self.settings(
+                LTI_TOOL_CONFIGURATION=TEST_LTI_TOOL_CONFIGURATION):
+
+            client = Client()
+            response = client.get('/lti/config.xml')
+            config_xml = response.content.decode()
+
+            root = ET.fromstring(config_xml)
+            course_navigation_property = root.find(".//*[@name='course_navigation']")
+            enabled = course_navigation_property.find("./*[@name='enabled']").text
+
+            self.assertEqual(enabled, 'true')
