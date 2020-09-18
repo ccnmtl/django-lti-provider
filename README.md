@@ -65,7 +65,7 @@ Complete a migration
 The ``LTI_TOOL_CONFIGURATION`` variable in your ``settings.py`` allows you to
 configure your application's config.xml and set other options for the library. ([Edu Apps](https://www.edu-apps.org/code.html) has good documentation
 on configuring an lti provider through xml.)
-```
+```python
 LTI_TOOL_CONFIGURATION = {
     'title': '<your lti provider title>',
     'description': '<your description>',

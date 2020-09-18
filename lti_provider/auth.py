@@ -1,18 +1,23 @@
 from hashlib import sha1
 
-from django.contrib.auth.models import User
 from django.utils.encoding import force_bytes
 from nameparser import HumanName
 from pylti.common import LTIException
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
+username_field = User.USERNAME_FIELD
 
 
 class LTIBackend(object):
 
     def create_user(self, request, lti, username):
         # create the user if necessary
-        user = User(username=username, password='LTI user')
+        kwargs = {username_field: username, 'password': 'LTI user'}
+        user = User(**kwargs)
         user.set_unusable_password()
-        user.email = lti.user_email(request) or ''
+        if username_field != 'email':
+            user.email = lti.user_email(request) or ''
 
         name = HumanName(lti.user_fullname(request))
         user.first_name = name.first[:30]
@@ -37,8 +42,8 @@ class LTIBackend(object):
 
     def find_user(self, request, lti):
         # find the user via lms identifier first
-        user = User.objects.filter(
-            username=lti.user_identifier(request)).first()
+        kwargs = {username_field: lti.user_identifier(request)}
+        user = User.objects.filter(**kwargs).first()
 
         # find the user via email address, if it exists
         email = lti.user_email(request)
@@ -64,8 +69,9 @@ class LTIBackend(object):
         try:
             lti.verify(request)
             return self.find_or_create_user(request, lti)
-        except LTIException:
+        except LTIException as e:
             lti.clear_session(request)
+            print(e)
             return None
 
     def get_user(self, user_id):
