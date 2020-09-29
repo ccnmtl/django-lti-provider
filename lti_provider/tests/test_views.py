@@ -162,3 +162,25 @@ class LTIViewTest(TestCase):
                     "./*[@name='enabled']").text
 
             self.assertEqual(enabled, 'true')
+
+    def test_course_navigation_as_dict(self):
+        lti_tool_config = TEST_LTI_TOOL_CONFIGURATION
+        lti_tool_config['course_navigation'] = {
+            "default": "disabled",
+            "enabled": "true",
+            "windowTarget": "_blank"
+        }
+        with self.settings(
+                LTI_TOOL_CONFIGURATION=lti_tool_config):
+
+            client = Client()
+            response = client.get('/lti/config.xml')
+            config_xml = response.content.decode()
+
+            root = ET.fromstring(config_xml)
+            course_navigation_property = root.find(
+                    ".//*[@name='course_navigation']")
+            window_target = course_navigation_property.find(
+                    "./*[@name='windowTarget']").text
+
+            self.assertEqual(window_target, '_blank')
