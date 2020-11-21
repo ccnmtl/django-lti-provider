@@ -9,6 +9,7 @@ Additional work was completed to provide fuller functionality and support the id
 such as Canvas, Blackboard, Moodle and EdEx.
 
 django-lti-provider offers:
+
 * an authentication backend to complete an oAuth handshake (optional)
 * a templated view for config.xml generation
 * a templated landing page view for those LMS who do not have a 'launch in new tab' option, i.e. Canvas
@@ -22,12 +23,14 @@ See an example Django app using the library at [Django LTI Provider Example](htt
 ## Installation
 
 You can install ```django-lti-provider``` through ```pip```:
+
 ```python
 $ pip install django-lti-provider
 ```
 Or, if you're using virtualenv, add ```django-lti-provider``` to your ```requirements.txt```.
 
 Add to ```INSTALLED_APPS``` in your ```settings.py```::
+
 ```python
   'lti_provider',
 ```
@@ -43,13 +46,17 @@ Add to ```INSTALLED_APPS``` in your ```settings.py```::
 
 ## Configuration
 
+### Basic setup steps
+
 Add the URL route::
+
 ```python
 url(r'^lti/', include('lti_provider.urls'))
 
 ```
 
 Add the LTIBackend to your AUTHENTICATION_BACKENDS:
+
 ```python
 AUTHENTICATION_BACKENDS = [
   'django.contrib.auth.backends.ModelBackend',
@@ -58,13 +65,17 @@ AUTHENTICATION_BACKENDS = [
 ```
 
 Complete a migration
+
 ```python
    ./manage.py migrate
 ```
 
+### Primary LTI config
+
 The ``LTI_TOOL_CONFIGURATION`` variable in your ``settings.py`` allows you to
 configure your application's config.xml and set other options for the library. ([Edu Apps](https://www.edu-apps.org/code.html) has good documentation
 on configuring an lti provider through xml.)
+
 ```python
 LTI_TOOL_CONFIGURATION = {
     'title': '<your lti provider title>',
@@ -89,23 +100,41 @@ LTI_TOOL_CONFIGURATION = {
 ```
 
 To stash custom properties in your session, populate the `LTI_PROPERTY_LIST_EX` variable in your `settings.py`. This is useful for LMS specific `custom_x` parameters that will be needed later. The default value for `LTI_PROPERTY_LIST_EX` is: `['custom_canvas_user_login_id', 'context_title', 'lis_course_offering_sourcedid', 'custom_canvas_api_domain']`. 
+
 ```python
 LTI_PROPERTY_LIST_EX = ['custom_parameter1', 'custom_parameter2']
 ```
 
-Please note that you will need to add the following settings in your applications `settings.py`:
+### Using a cookie based session
 
-```
+For simplest scenarios you can store data for the LTI request in a session cookie.
+This is the quickest way to get up and running, and due to Django's tamper
+proof cookie session (assuming a secure secret key) it is a safe option.
+Please note that you will need to add the following settings in your
+applications `settings.py` to make use of cookies:
+
+```python
 SESSION_ENGINE = "django.contrib.sessions.backends.signed_cookies"
 SESSION_COOKIE_SAMESITE = None
+SESSION_COOKIE_SECURE = True
 ```
 
-Because Canvas sends the information that we are storing in a `POST` request on the LTI launch, we need to disable the restriction on cookies only being allowed to be set from the same site. For more information on this [read here](https://docs.djangoproject.com/en/3.0/ref/settings/#session-cookie-samesite).
+Because Canvas sends the information that we are storing in a `POST`
+request on the LTI launch, we need to relax the restriction of cookies
+only being allowed to be set from the same site. For more information on
+`SESSION_COOKIE_SAMESITE` [read here](https://docs.djangoproject.com/en/3.0/ref/settings/#session-cookie-samesite).
+
+For more information on why `SESSION_COOKIE_SAMESITE` and `SESSION_COOKIE_SECURE`
+are needed, if you are choosing to make use of cookies, please read
+[here.](https://community.canvaslms.com/t5/Developers-Group/SameSite-Cookies-and-Canvas/ba-p/257967)
+
+### Extra LTI Configuration values
 
 To specify a custom username property, add the `LTI_PROPERTY_USER_USERNAME` variable to your `settings.py`. By default, `LTI_PROPERTY_USER_USERNAME` is `custom_canvas_user_login_id`. This value can vary depending on your LMS.
 
 To pass through extra LTI parameters to your provider, populate the `LTI_EXTRA_PARAMETERS` variable in your `settings.py`.
 This is useful for custom parameters you may specify at installation time.
+
 ```python
 LTI_EXTRA_PARAMETERS = ['lti_version']  # example
 ```
@@ -123,17 +152,35 @@ PYLTI_CONFIG = {
 }
 ```
 
-Additionally you will need to make sure to add the following to your `settings.py` file:
+### Canvas and LTI iframes
 
-```
-X_FRAME_OPTIONS = "ALLOW-FROM https://<your-org-subdomain>.instructure.com"
+Since LTI tools live within an iframe on Canvas, you **might** need
+adjust your `X_FRAME_OPTIONS` setting to allow for the LTI tool to be
+opened within the iframe. To the best of our knowledge you probably
+don't have to adjust this setting, as Canvas has built a workaround.
+For more info [read here](https://github.com/ccnmtl/django-lti-provider/issues/280)
+
+This ensures that the Django application will allow requests from your
+orgs Canvas instance. For more on `X_FRAME_OPTIONS` please 
+[consult here](https://docs.djangoproject.com/en/3.0/ref/clickjacking/#module-django.middleware.clickjacking). 
+
+### If you are using a load balancer
+
+If you happen to have a deployment scenario where you have load balancer
+listening on https and routing traffic to nodes that are listening to HTTP,
+you will need to add the following line of configuration in `settings.py`:
+
+```python
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 ```
 
-This ensures that the Django application will allow requests from your orgs Canvas instance. For more on `X_FRAME_OPTIONS` please [consult here](https://docs.djangoproject.com/en/3.0/ref/clickjacking/#module-django.middleware.clickjacking). 
+This ensures the correct `launch_url` is generated for the LTI tool.
+For more on this setting, [read here](https://docs.djangoproject.com/en/3.1/ref/settings/#secure-proxy-ssl-header).
 
 ## Assignments
 
 To support multiple assignments: 
+
 * Create multiple endpoint views
 * Add the assignment urls to the `LTI_TOOL_CONFIGURATION['assignments'] map
 * Add an assignment, using the External Tool option.
