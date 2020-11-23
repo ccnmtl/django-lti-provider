@@ -14,3 +14,4 @@ A list of much-appreciated contributors who have submitted patches and reported 
 * Srijan Anand, Senior Backend Developer at Valiance Analytics, Noida (@srijannnd)
 * AZ Vasquez (@thedpws)
 * Tylor Dodge (dodget)
+* Kyle Lawlor-Bagcal (wgwz)
