@@ -9,7 +9,7 @@ MAX_COMPLEXITY ?= 7
 INTERFACE ?= localhost
 RUNSERVER_PORT ?= 8000
 PY_DIRS ?= $(APP)
-DJANGO ?= "Django==1.11.27"
+DJANGO ?= "Django==2.2.13"
 
 # Travis has issues here. See:
 # https://github.com/travis-ci/travis-ci/issues/9524
