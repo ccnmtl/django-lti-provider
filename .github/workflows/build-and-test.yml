@@ -12,7 +12,7 @@ jobs:
 
       - name: Install Django
         run: |
-          python -m pip install "Django~=${{ matrix.django-version }}"
+          python3 -m pip install "Django~=${{ matrix.django-version }}"
 
       - name: Build and Test
         run: make
