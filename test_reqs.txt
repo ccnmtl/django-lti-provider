@@ -19,7 +19,7 @@ pep8==1.7.1
 pyflakes==2.2.0
 pytz==2020.5
 configparser==5.0.0
-
+importlib_metadata==3.4.0
 typing==3.7.4.1; python_version < '3.5'
 entrypoints==0.3
 functools32==3.2.3-2; python_version < '3'
