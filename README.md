@@ -1,3 +1,5 @@
+[![Actions Status](https://github.com/ccnmtl/django-lti-provider/workflows/build-and-test/badge.svg)](https://github.com/ccnmtl/django-lti-provider/actions)
+
 # Documentation
 
 django-lti-provider provides LTI functionality for the Django web framework. This
