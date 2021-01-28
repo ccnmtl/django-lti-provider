@@ -75,20 +75,20 @@ def generate_lti_request(course_context=None, provider=None, use=None):
     return request
 
 
-class UserFactory(factory.DjangoModelFactory):
+class UserFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = User
     username = factory.Sequence(lambda n: 'user%d' % n)
     password = factory.PostGenerationMethodCall('set_password', 'test')
 
 
-class GroupFactory(factory.DjangoModelFactory):
+class GroupFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Group
     name = factory.Sequence(lambda n: 'group %s' % n)
 
 
-class LTICourseContextFactory(factory.DjangoModelFactory):
+class LTICourseContextFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = LTICourseContext
 
