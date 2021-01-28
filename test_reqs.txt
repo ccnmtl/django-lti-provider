@@ -18,7 +18,7 @@ django-jenkins==0.110.0
 pep8==1.7.1
 pyflakes==2.2.0
 pytz==2020.5
-configparser==5.0.0
+configparser==5.0.1
 zipp==3.4.0
 importlib_metadata==3.4.0
 entrypoints==0.3
