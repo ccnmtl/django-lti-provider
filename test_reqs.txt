@@ -1,6 +1,6 @@
 six==1.15.0
 nameparser==1.0.6
-httplib2==0.18.1
+httplib2==0.19.0
 oauth2==1.9.0.post1
 oauthlib==3.1.0
 pylti==0.7.0
