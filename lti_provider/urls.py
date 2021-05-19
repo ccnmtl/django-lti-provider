@@ -14,7 +14,7 @@ urlpatterns = [
     url(r'^landing/$', LTILandingPage.as_view(), {}, 'lti-landing-page'),
     url('^grade/$', LTIPostGrade.as_view(), {}, 'lti-post-grade'),
     url(r'^$', LTIRoutingView.as_view(), {}, 'lti-login'),
-    url(r'^assignment/(?P<assignment_name>.*)/(?P<pk>\d+)/$',
+    url(r'^assignment/(?P<assignment_name>.*)/(?P<assignment_id>\d+)/$',
         LTIRoutingView.as_view(), {}, 'lti-assignment-view'),
     url(r'^assignment/(?P<assignment_name>.*)/$',
         LTIRoutingView.as_view(), {}, 'lti-assignment-view')
