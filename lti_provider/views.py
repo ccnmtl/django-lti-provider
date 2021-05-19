@@ -75,10 +75,10 @@ class LTIRoutingView(LTIAuthMixin, View):
 
         return url
 
-    def lookup_assignment_name(self, assignment_name):
+    def lookup_assignment_name(self, assignment_name, assignment_id):
         try:
             # first see if there is a matching named view
-            url = reverse(assignment_name)
+            url = reverse(assignment_name, kwargs={'pk': assignment_id})
         except NoReverseMatch:
             # otherwise look it up.
             assignments = settings.LTI_TOOL_CONFIGURATION['assignments']
@@ -86,7 +86,7 @@ class LTIRoutingView(LTIAuthMixin, View):
 
         return url
 
-    def post(self, request, assignment_name=None):
+    def post(self, request, assignment_name=None, assignment_id=None):
         if request.POST.get('ext_content_intended_use', '') == 'embed':
             domain = self.request.get_host()
             url = '%s://%s/%s?return_url=%s' % (
@@ -94,7 +94,7 @@ class LTIRoutingView(LTIAuthMixin, View):
                 settings.LTI_TOOL_CONFIGURATION.get('embed_url'),
                 request.POST.get('launch_presentation_return_url'))
         elif assignment_name:
-            url = self.lookup_assignment_name(assignment_name)
+            url = self.lookup_assignment_name(assignment_name, assignment_id)
         elif settings.LTI_TOOL_CONFIGURATION.get('new_tab'):
             url = reverse('lti-landing-page')
         else:
