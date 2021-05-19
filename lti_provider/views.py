@@ -78,7 +78,8 @@ class LTIRoutingView(LTIAuthMixin, View):
     def lookup_assignment_name(self, assignment_name, assignment_id):
         try:
             # first see if there is a matching named view
-            url = reverse(assignment_name, kwargs={'assignment_id': assignment_id})
+            url = reverse(
+                assignment_name, kwargs={'assignment_id': assignment_id})
         except NoReverseMatch:
             # otherwise look it up.
             assignments = settings.LTI_TOOL_CONFIGURATION['assignments']
