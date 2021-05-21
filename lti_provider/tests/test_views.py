@@ -184,3 +184,15 @@ class LTIViewTest(TestCase):
                     "./*[@name='windowTarget']").text
 
             self.assertEqual(window_target, '_blank')
+
+    def test_lookup_assignment_name(self):
+        lti_tool_config = TEST_LTI_TOOL_CONFIGURATION
+        lti_tool_config['assignments'] = {
+            '1': '/assignment/1/'
+        }
+        with self.settings(PYLTI_CONFIG={'consumers': CONSUMERS},
+                           LTI_TOOL_CONFIGURATION=lti_tool_config):
+
+            view = LTIRoutingView()
+            assignment = view.lookup_assignment_name('1', '1')
+            self.assertEqual(assignment, '/assignment/1/')
