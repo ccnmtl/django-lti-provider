@@ -7,7 +7,7 @@ pylti==0.7.0
 ipaddress==1.0.23
 python-dateutil==2.8.1
 text-unidecode==1.3  # for faker
-faker==8.5.1
+faker==8.6.0
 factory-boy==3.2.0
 coverage==5.5
 mccabe==0.6.1
