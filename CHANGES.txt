@@ -1,3 +1,9 @@
+0.4.2
+==================
+* Allow for dynamic assignments
+* Update dependencies
+
+
 0.4.1
 ==================
 * Allow configuration of course_navigation as a dictionary (dodget)
