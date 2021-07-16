@@ -190,3 +190,8 @@ To support multiple assignments:
 * Update the URL to be `https://<your domain name>/lti/assignment/<assignment_name>`
 * The `assignment_name` variable should match a landing_url in the LTI_TOOL_CONFIGURATION dict.
 * Full example here: [Django LTI Provider Example](https://github.com/ccnmtl/django-lti-provider-example).
+
+OR
+
+* Create a single named endpoint that accepts an id
+* On Post, django-lti-provider will attempt to reverse the assignment_name/id and then redirect to that view.
