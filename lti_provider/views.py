@@ -96,6 +96,10 @@ class LTIRoutingView(LTIAuthMixin, View):
                 request.POST.get('launch_presentation_return_url'))
         elif assignment_name:
             url = self.lookup_assignment_name(assignment_name, assignment_id)
+        elif request.GET.get('assignment', None) is not None:
+            assignment_name = request.GET.get('assignment')
+            assignment_id = request.GET.get('id')
+            url = self.lookup_assignment_name(assignment_name, assignment_id)
         elif settings.LTI_TOOL_CONFIGURATION.get('new_tab'):
             url = reverse('lti-landing-page')
         else:
