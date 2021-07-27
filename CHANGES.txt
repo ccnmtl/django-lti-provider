@@ -1,8 +1,11 @@
+0.4.3
+==================
+* Support dynamic assignments for older Canvas versions
+
 0.4.2
 ==================
 * Allow for dynamic assignments
 * Update dependencies
-
 
 0.4.1
 ==================
