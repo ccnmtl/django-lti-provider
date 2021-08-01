@@ -94,7 +94,7 @@ class LTIRoutingView(LTIAuthMixin, View):
                 settings.LTI_TOOL_CONFIGURATION.get('embed_url'),
                 request.POST.get('launch_presentation_return_url'))
         elif assignment_name:
-            url = self.lookup_assignment_name(assignment_name, assignment_id)
+            url = self.lookup_assignment_name(assignment_name, pk)
         elif request.GET.get('assignment', None) is not None:
             assignment_name = request.GET.get('assignment')
             pk = request.GET.get('pk')
