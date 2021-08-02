@@ -1,3 +1,7 @@
+0.4.4
+==================
+* Update dynamic assignment syntax to make them more generic
+
 0.4.3
 ==================
 * Support dynamic assignments for older Canvas versions
