@@ -22,5 +22,5 @@ configparser==5.0.2
 zipp==3.5.0
 importlib_metadata==4.7.1
 entrypoints==0.3
-typing_extensions==3.10.0.0
+typing_extensions==3.10.0.1
 pyparsing==2.4.7
