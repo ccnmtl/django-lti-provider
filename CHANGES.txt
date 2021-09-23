@@ -1,3 +1,7 @@
+0.4.5
+==================
+* Allow for teaching assistents to be given full faculty status.
+
 0.4.4
 ==================
 * Update dynamic assignment syntax to make them more generic
