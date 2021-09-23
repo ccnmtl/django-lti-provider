@@ -24,6 +24,11 @@ class LTIAuthMixin(object):
                 request.user.groups.add(ctx.faculty_group)
                 break
 
+            if settings.LTI_TOOL_CONFIGURATION['allow_ta_access']:
+                if 'teachingassistant' in role:
+                    request.user.groups.add(ctx.faculty_group)
+                    break
+
     def course_configuration(self, request, lti):
         # check if course is configured
         if settings.LTI_TOOL_CONFIGURATION['course_aware']:

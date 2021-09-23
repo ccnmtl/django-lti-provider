@@ -4,7 +4,7 @@
 
 django-lti-provider provides LTI functionality for the Django web framework. This
 work began as a port of MIT's [LTI Flask Sample](https://github.com/mitodl/mit_lti_flask_sample),
-which demonstrates a sample LTI provider for the Flask Framework based on 
+which demonstrates a sample LTI provider for the Flask Framework based on
 the [Python LTI library, PyLTI](https://github.com/mitodl/pylti).
 
 Additional work was completed to provide fuller functionality and support the idiosyncrasies of various LMS systems
@@ -93,6 +93,7 @@ LTI_TOOL_CONFIGURATION = {
     'frame_width': <width in pixels>,
     'frame_height': <height in pixels>,
     'custom_fields': <dictionary>,
+    'allow_ta_access': <True or False>,
     'assignments': {
         '<name>': '<landing_url>',
         '<name>': '<landing_url>',
@@ -101,7 +102,7 @@ LTI_TOOL_CONFIGURATION = {
 }
 ```
 
-To stash custom properties in your session, populate the `LTI_PROPERTY_LIST_EX` variable in your `settings.py`. This is useful for LMS specific `custom_x` parameters that will be needed later. The default value for `LTI_PROPERTY_LIST_EX` is: `['custom_canvas_user_login_id', 'context_title', 'lis_course_offering_sourcedid', 'custom_canvas_api_domain']`. 
+To stash custom properties in your session, populate the `LTI_PROPERTY_LIST_EX` variable in your `settings.py`. This is useful for LMS specific `custom_x` parameters that will be needed later. The default value for `LTI_PROPERTY_LIST_EX` is: `['custom_canvas_user_login_id', 'context_title', 'lis_course_offering_sourcedid', 'custom_canvas_api_domain']`.
 
 ```python
 LTI_PROPERTY_LIST_EX = ['custom_parameter1', 'custom_parameter2']
@@ -141,7 +142,7 @@ This is useful for custom parameters you may specify at installation time.
 LTI_EXTRA_PARAMETERS = ['lti_version']  # example
 ```
 
-The ``PYLTI_CONFIG`` variable in your ``settings.py`` configures the 
+The ``PYLTI_CONFIG`` variable in your ``settings.py`` configures the
 application consumers and secrets.
 
 ```python
@@ -163,8 +164,8 @@ don't have to adjust this setting, as Canvas has built a workaround.
 For more info [read here](https://github.com/ccnmtl/django-lti-provider/issues/280)
 
 This ensures that the Django application will allow requests from your
-orgs Canvas instance. For more on `X_FRAME_OPTIONS` please 
-[consult here](https://docs.djangoproject.com/en/3.0/ref/clickjacking/#module-django.middleware.clickjacking). 
+orgs Canvas instance. For more on `X_FRAME_OPTIONS` please
+[consult here](https://docs.djangoproject.com/en/3.0/ref/clickjacking/#module-django.middleware.clickjacking).
 
 ### If you are using a load balancer
 
@@ -181,7 +182,7 @@ For more on this setting, [read here](https://docs.djangoproject.com/en/3.1/ref/
 
 ## Assignments
 
-To support multiple assignments: 
+To support multiple assignments:
 
 * Create multiple endpoint views
 * Add the assignment urls to the `LTI_TOOL_CONFIGURATION['assignments'] map
