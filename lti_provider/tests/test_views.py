@@ -22,7 +22,8 @@ TEST_LTI_TOOL_CONFIGURATION = {
     'landing_url': '{}://{}/',
     'course_aware': True,
     'course_navigation': True,
-    'new_tab': False
+    'new_tab': False,
+    'allow_ta_access': False
 }
 
 
@@ -49,6 +50,50 @@ class LTIViewTest(TestCase):
         mixin.join_groups(self.request, self.lti, ctx)
         self.assertTrue(user in ctx.group.user_set.all())
         self.assertTrue(user in ctx.faculty_group.user_set.all())
+
+    def test_join_groups_student(self):
+        mixin = LTIAuthMixin()
+        ctx = LTICourseContextFactory()
+        user = UserFactory()
+        self.request.user = user
+
+        with self.settings(
+                LTI_TOOL_CONFIGURATION=TEST_LTI_TOOL_CONFIGURATION):
+            self.request.session['roles'] = u'Learner'
+            mixin.join_groups(self.request, self.lti, ctx)
+            self.assertTrue(user in ctx.group.user_set.all())
+            self.assertFalse(user in ctx.faculty_group.user_set.all())
+
+    def test_join_groups_teachingassistant_false(self):
+        mixin = LTIAuthMixin()
+        ctx = LTICourseContextFactory()
+        user = UserFactory()
+        self.request.user = user
+        lti_tool_config1 = TEST_LTI_TOOL_CONFIGURATION.copy()
+
+        with self.settings(
+                LTI_TOOL_CONFIGURATION=lti_tool_config1):
+            self.request.session['roles'] = \
+                u'urn:lti:role:ims/liss/TeachingAssistant'
+            mixin.join_groups(self.request, self.lti, ctx)
+            self.assertTrue(user in ctx.group.user_set.all())
+            self.assertFalse(user in ctx.faculty_group.user_set.all())
+
+    def test_join_groups_teachingassistant_true(self):
+        mixin = LTIAuthMixin()
+        ctx = LTICourseContextFactory()
+        user = UserFactory()
+        self.request.user = user
+        lti_tool_config2 = TEST_LTI_TOOL_CONFIGURATION.copy()
+        lti_tool_config2['allow_ta_access'] = True
+
+        with self.settings(
+                LTI_TOOL_CONFIGURATION=lti_tool_config2):
+            self.request.session['roles'] = \
+                u'urn:lti:role:ims/lis/TeachingAssistant'
+            mixin.join_groups(self.request, self.lti, ctx)
+            self.assertTrue(user in ctx.group.user_set.all())
+            self.assertTrue(user in ctx.faculty_group.user_set.all())
 
     def test_launch_invalid_user(self):
         request = generate_lti_request()
