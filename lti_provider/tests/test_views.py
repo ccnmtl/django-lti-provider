@@ -95,6 +95,22 @@ class LTIViewTest(TestCase):
             self.assertTrue(user in ctx.group.user_set.all())
             self.assertTrue(user in ctx.faculty_group.user_set.all())
 
+    def test_missing_configuration(self):
+        mixin = LTIAuthMixin()
+        ctx = LTICourseContextFactory()
+        user = UserFactory()
+        self.request.user = user
+        lti_tool_config2 = TEST_LTI_TOOL_CONFIGURATION.copy()
+        del lti_tool_config2['allow_ta_access']
+
+        with self.settings(
+                LTI_TOOL_CONFIGURATION=lti_tool_config2):
+            self.request.session['roles'] = \
+                u'urn:lti:role:ims/lis/TeachingAssistant'
+            mixin.join_groups(self.request, self.lti, ctx)
+            self.assertTrue(user in ctx.group.user_set.all())
+            self.assertFalse(user in ctx.faculty_group.user_set.all())
+
     def test_launch_invalid_user(self):
         request = generate_lti_request()
 

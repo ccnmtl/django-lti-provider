@@ -120,7 +120,7 @@ class LTILandingPage(LTIAuthMixin, TemplateView):
         url = settings.LTI_TOOL_CONFIGURATION['landing_url'].format(
             self.request.scheme, domain, self.lti.course_context(self.request))
         is_auth_ta = None
-        if settings.LTI_TOOL_CONFIGURATION['allow_ta_access']:
+        if settings.LTI_TOOL_CONFIGURATION.get('allow_ta_access', False):
             role = self.request.session.get('roles', '').lower()
             is_auth_ta = 'teachingassistant' in role
 
