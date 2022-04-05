@@ -11,3 +11,4 @@ reports
 build
 dist
 django_lti_provider.egg-info/
+local_settings.py
