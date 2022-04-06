@@ -16,6 +16,8 @@ def main():
     # Dynamically configure the Django settings with the minimum necessary to
     # get Django running tests
     settings.configure(
+        SECRET_KEY="something super secret",
+        DEFAULT_AUTO_FIELD='django.db.models.AutoField',
         MIDDLEWARE=(
             'django.contrib.sessions.middleware.SessionMiddleware',
             'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -48,6 +50,7 @@ def main():
                         'django.template.context_processors.debug',
                         'django.template.context_processors.i18n',
                         'django.template.context_processors.media',
+                        'django.template.context_processors.request',
                         'django.template.context_processors.static',
                         'django.template.context_processors.tz',
                         'django.contrib.messages.context_processors.messages',
