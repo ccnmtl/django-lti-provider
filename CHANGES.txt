@@ -1,3 +1,9 @@
+1.0.0
+==================
+* Django 3 compatability
+* No longer testing against Django 2.2
+
+
 0.4.7
 ==================
 * Provide a default value for allow_ta_access setting.
