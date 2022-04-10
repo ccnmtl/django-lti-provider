@@ -5,8 +5,7 @@ from nameparser import HumanName
 from pylti.common import LTIException
 from django.contrib.auth import get_user_model
 
-User = get_user_model()
-username_field = User.USERNAME_FIELD
+username_field = get_user_model().USERNAME_FIELD
 
 
 class LTIBackend(object):
@@ -14,7 +13,7 @@ class LTIBackend(object):
     def create_user(self, request, lti, username):
         # create the user if necessary
         kwargs = {username_field: username, 'password': 'LTI user'}
-        user = User(**kwargs)
+        user = get_user_model()(**kwargs)
         user.set_unusable_password()
         if username_field != 'email':
             user.email = lti.user_email(request) or ''
@@ -43,17 +42,17 @@ class LTIBackend(object):
     def find_user(self, request, lti):
         # find the user via lms identifier first
         kwargs = {username_field: lti.user_identifier(request)}
-        user = User.objects.filter(**kwargs).first()
+        user = get_user_model().objects.filter(**kwargs).first()
 
         # find the user via email address, if it exists
         email = lti.user_email(request)
         if user is None and email:
-            user = User.objects.filter(email=email).first()
+            user = get_user_model().objects.filter(email=email).first()
 
         if user is None:
             # find the user via hashed username
             username = self.get_hashed_username(request, lti)
-            user = User.objects.filter(username=username).first()
+            user = get_user_model().objects.filter(username=username).first()
 
         return user
 
@@ -76,6 +75,6 @@ class LTIBackend(object):
 
     def get_user(self, user_id):
         try:
-            return User.objects.get(pk=user_id)
-        except User.DoesNotExist:
+            return get_user_model().objects.get(pk=user_id)
+        except get_user_model().DoesNotExist:
             return None
