@@ -42,17 +42,18 @@ class LTIBackend(object):
     def find_user(self, request, lti):
         # find the user via lms identifier first
         kwargs = {username_field: lti.user_identifier(request)}
-        user = get_user_model().objects.filter(**kwargs).first()
+        user_model = get_user_model()
+        user = user_model.objects.filter(**kwargs).first()
 
         # find the user via email address, if it exists
         email = lti.user_email(request)
         if user is None and email:
-            user = get_user_model().objects.filter(email=email).first()
+            user = user_model.objects.filter(email=email).first()
 
         if user is None:
             # find the user via hashed username
             username = self.get_hashed_username(request, lti)
-            user = get_user_model().objects.filter(username=username).first()
+            user = user_model.objects.filter(username=username).first()
 
         return user
 
@@ -74,7 +75,9 @@ class LTIBackend(object):
             return None
 
     def get_user(self, user_id):
+        user_model = get_user_model()
+
         try:
-            return get_user_model().objects.get(pk=user_id)
-        except get_user_model().DoesNotExist:
+            return user_model.objects.get(pk=user_id)
+        except user_model.DoesNotExist:
             return None
