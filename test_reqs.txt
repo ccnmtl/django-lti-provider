@@ -17,7 +17,7 @@ flake8==5.0.4
 django-jenkins==0.110.0
 pep8==1.7.1
 pyflakes==2.5.0
-pytz==2022.1
+pytz==2022.2
 configparser==5.2.0
 zipp==3.8.1
 importlib-metadata<4.13 # for flake8
