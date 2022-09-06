@@ -7,4 +7,5 @@ class AssetAdmin(admin.ModelAdmin):
     class Meta:
         model = LTICourseContext
 
+    search_fields = ('group', 'faculty_group')
     list_display = ('group', 'faculty_group')
