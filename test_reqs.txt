@@ -1,5 +1,5 @@
 six==1.16.0
-nameparser==1.1.1
+nameparser==1.1.2
 httplib2==0.21.0
 oauth2==1.9.0.post1
 oauthlib==3.2.2
