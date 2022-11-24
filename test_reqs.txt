@@ -13,7 +13,7 @@ coverage==6.5.0
 mccabe==0.7.0
 pycodestyle==2.9.1
 enum34==1.1.10
-flake8==5.0.4
+flake8==6.0.0
 django-jenkins==0.110.0
 pep8==1.7.1
 pyflakes==2.5.0
