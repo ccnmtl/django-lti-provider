@@ -11,7 +11,7 @@ faker==19.2.0
 factory-boy==3.3.0
 coverage==7.2.7
 mccabe==0.7.0
-pycodestyle==2.10.0
+pycodestyle==2.11.0
 enum34==1.1.10
 flake8==6.1.0
 django-jenkins==0.110.0
