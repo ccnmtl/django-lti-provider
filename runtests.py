@@ -29,7 +29,6 @@ def main():
             'django.contrib.contenttypes',
             'django.contrib.sessions',
             'lti_provider',
-            'django_jenkins',
         ),
         TEST_RUNNER='django.test.runner.DiscoverRunner',
 
@@ -81,7 +80,6 @@ def main():
 
     # Fire off the tests
     call_command('test')
-    call_command('jenkins', '--enable-coverage')
 
 if __name__ == '__main__':
     main()

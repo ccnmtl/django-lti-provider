@@ -29,7 +29,7 @@ setup(
     name="django-lti-provider",
     version="1.0.0",
     author="Susan Dreher",
-    author_email="sdreher@columbia.edu",
+    author_email="ctl-dev@columbia.edu",
     url="https://github.com/ccnmtl/django-lti-provider",
     description="LTI helper",
     long_description="LTI Helper",
