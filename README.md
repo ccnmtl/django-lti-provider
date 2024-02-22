@@ -2,7 +2,8 @@
 
 # Documentation
 
-django-lti-provider provides LTI functionality for the Django web framework. This
+django-lti-provider provides [Learning Tools Interoperability](https://en.wikipedia.org/wiki/Learning_Tools_Interoperability)
+(LTI) functionality for the Django web framework. This
 work began as a port of MIT's [LTI Flask Sample](https://github.com/mitodl/mit_lti_flask_sample),
 which demonstrates a sample LTI provider for the Flask Framework based on
 the [Python LTI library, PyLTI](https://github.com/mitodl/pylti).
