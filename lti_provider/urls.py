@@ -1,7 +1,11 @@
 from django.urls import re_path
 
-from lti_provider.views import LTIConfigView, LTILandingPage, LTIRoutingView, \
-    LTICourseEnableView, LTIPostGrade, LTIFailAuthorization, LTICourseConfigure
+from lti_provider.views import (
+    LTIConfigView, LTILandingPage, LTIRoutingView,
+    LTICourseEnableView, LTIPostGrade, LTIFailAuthorization,
+    LTICourseConfigure,
+    login, launch, get_jwks, configure
+)
 
 
 urlpatterns = [
@@ -17,5 +21,12 @@ urlpatterns = [
     re_path(r'^assignment/(?P<assignment_name>.*)/(?P<pk>\d+)/$',
             LTIRoutingView.as_view(), {}, 'lti-assignment-view'),
     re_path(r'^assignment/(?P<assignment_name>.*)/$',
-            LTIRoutingView.as_view(), {}, 'lti-assignment-view')
+            LTIRoutingView.as_view(), {}, 'lti-assignment-view'),
+
+    # New pylti1.3 routes
+    re_path(r'^login/$', login, name='lti-login'),
+    re_path(r'^launch/$', launch, name='lti-launch'),
+    re_path(r'^jwks/$', get_jwks, name='jwks'),
+    re_path(r'^configure/(?P<launch_id>[\w-]+)/$', configure,
+            name='lti-configure')
 ]

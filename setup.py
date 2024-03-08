@@ -40,6 +40,7 @@ setup(
         "oauth2",
         "oauthlib",
         "pylti",
+        "pylti1p3",
         ],
     scripts=[],
     license="BSD",

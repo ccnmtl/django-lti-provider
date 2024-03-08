@@ -1,4 +1,6 @@
 import time
+import os
+import pprint
 
 from django.conf import settings
 from django.contrib import messages
@@ -15,11 +17,16 @@ from lti_provider.mixins import LTIAuthMixin, LTILoggedInMixin
 from lti_provider.models import LTICourseContext
 from pylti.common import LTIPostMessageException, post_message
 
-
-try:
-    from django.urls import reverse
-except ImportError:
-    from django.core.urlresolvers import reverse
+from django.http import HttpResponse, HttpResponseForbidden, JsonResponse
+from django.shortcuts import render
+from django.views.decorators.http import require_POST
+from django.urls import reverse
+from pylti1p3.contrib.django import (
+    DjangoOIDCLogin, DjangoMessageLaunch, DjangoCacheDataStorage
+)
+from pylti1p3.deep_link_resource import DeepLinkResource
+from pylti1p3.tool_config import ToolConfJsonFile
+from pylti1p3.registration import Registration
 
 
 class LTIConfigView(TemplateView):
@@ -222,3 +229,109 @@ class LTIPostGrade(LTIAuthMixin, View):
             messages.add_message(request, messages.INFO, msg)
 
             return HttpResponseRedirect(redirect_url)
+
+
+#
+# New pylti1p3 funtionality below, adapted from pylti1.3-django-example
+#
+#   https://github.com/dmitry-viskov/pylti1.3-django-example
+#
+class ExtendedDjangoMessageLaunch(DjangoMessageLaunch):
+
+    def validate_nonce(self):
+        """
+        Probably it is bug on "https://lti-ri.imsglobal.org":
+        site passes invalid "nonce" value during deep links launch.
+        Because of this in case of iss == http://imsglobal.org just
+        skip nonce validation.
+
+        """
+        iss = self.get_iss()
+        deep_link_launch = self.is_deep_link_launch()
+        if iss == "http://imsglobal.org" and deep_link_launch:
+            return self
+        return super().validate_nonce()
+
+
+def get_lti_config_path():
+    return os.path.join(settings.BASE_DIR, 'configs', 'config.json')
+
+
+def get_tool_conf():
+    tool_conf = ToolConfJsonFile(get_lti_config_path())
+    return tool_conf
+
+
+def get_jwk_from_public_key(key_name):
+    key_path = os.path.join(settings.BASE_DIR, 'configs', key_name)
+    f = open(key_path, 'r')
+    key_content = f.read()
+    jwk = Registration.get_jwk(key_content)
+    f.close()
+    return jwk
+
+
+def get_launch_data_storage():
+    return DjangoCacheDataStorage()
+
+
+def get_launch_url(request):
+    target_link_uri = request.POST.get(
+        'target_link_uri', request.GET.get('target_link_uri'))
+    if not target_link_uri:
+        raise Exception('Missing "target_link_uri" param')
+    return target_link_uri
+
+
+def login(request):
+    tool_conf = get_tool_conf()
+    launch_data_storage = get_launch_data_storage()
+
+    oidc_login = DjangoOIDCLogin(
+        request, tool_conf, launch_data_storage=launch_data_storage)
+    target_link_uri = get_launch_url(request)
+    return oidc_login\
+        .enable_check_cookies()\
+        .redirect(target_link_uri)
+
+
+@require_POST
+def launch(request):
+    tool_conf = get_tool_conf()
+    launch_data_storage = get_launch_data_storage()
+    message_launch = ExtendedDjangoMessageLaunch(
+        request, tool_conf, launch_data_storage=launch_data_storage)
+    message_launch_data = message_launch.get_launch_data()
+    pprint.pprint(message_launch_data)
+
+    return render(request, 'lti_provider/landing_page.html', {
+        'page_title': 'Page Title',
+        'is_deep_link_launch': message_launch.is_deep_link_launch(),
+        'launch_data': message_launch.get_launch_data(),
+        'launch_id': message_launch.get_launch_id(),
+        'curr_user_name': message_launch_data.get('name', ''),
+    })
+
+
+def get_jwks(request):
+    tool_conf = get_tool_conf()
+    return JsonResponse(tool_conf.get_jwks(), safe=False)
+
+
+def configure(request, launch_id):
+    tool_conf = get_tool_conf()
+    launch_data_storage = get_launch_data_storage()
+    message_launch = ExtendedDjangoMessageLaunch.from_cache(
+        launch_id, request, tool_conf,
+        launch_data_storage=launch_data_storage)
+
+    if not message_launch.is_deep_link_launch():
+        return HttpResponseForbidden('Must be a deep link!')
+
+    launch_url = request.build_absolute_uri(reverse('lti-launch'))
+
+    resource = DeepLinkResource()
+    resource.set_url(launch_url).set_title('Custom title!')
+
+    html = message_launch.get_deep_link().output_response_form([resource])
+    return HttpResponse(html)

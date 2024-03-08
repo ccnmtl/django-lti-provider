@@ -28,27 +28,27 @@ class LTITest(TestCase):
         self.emptyRequest.session.save()
 
     def test_init(self):
-        self.assertEquals(self.lti.request_type, 'initial')
-        self.assertEquals(self.lti.role_type, 'any')
+        self.assertEqual(self.lti.request_type, 'initial')
+        self.assertEqual(self.lti.role_type, 'any')
 
     def test_consumer_user_id(self):
         self.request.session['oauth_consumer_key'] = '1234567890'
-        self.assertEquals(
+        self.assertEqual(
             self.lti.consumer_user_id(self.request), '1234567890-student')
 
     def test_user_email(self):
         self.assertIsNone(self.lti.user_email(self.emptyRequest))
-        self.assertEquals(self.lti.user_email(self.request), 'foo@bar.com')
+        self.assertEqual(self.lti.user_email(self.request), 'foo@bar.com')
 
     def test_user_fullname(self):
-        self.assertEquals(self.lti.user_fullname(self.emptyRequest), '')
+        self.assertEqual(self.lti.user_fullname(self.emptyRequest), '')
 
-        self.assertEquals(self.lti.user_fullname(self.request), 'Foo Bar Baz')
+        self.assertEqual(self.lti.user_fullname(self.request), 'Foo Bar Baz')
 
     def test_user_roles(self):
-        self.assertEquals(self.lti.user_roles(self.emptyRequest), [])
+        self.assertEqual(self.lti.user_roles(self.emptyRequest), [])
 
-        self.assertEquals(self.lti.user_roles(self.request), [
+        self.assertEqual(self.lti.user_roles(self.request), [
             u'urn:lti:instrole:ims/lis/instructor',
             u'urn:lti:instrole:ims/lis/staff'])
 
@@ -57,7 +57,7 @@ class LTITest(TestCase):
 
     def test_consumers(self):
         with self.settings(PYLTI_CONFIG={'consumers': CONSUMERS}):
-            self.assertEquals(self.lti.consumers(), CONSUMERS)
+            self.assertEqual(self.lti.consumers(), CONSUMERS)
 
     def test_params(self):
         factory = RequestFactory()
