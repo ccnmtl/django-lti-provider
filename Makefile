@@ -3,8 +3,8 @@ VE ?= ./ve
 REQUIREMENTS ?= test_reqs.txt
 SYS_PYTHON ?= python3
 PY_SENTINAL ?= $(VE)/sentinal
-WHEEL_VERSION ?= 0.41.2
-PIP_VERSION ?= 23.2.1
+WHEEL_VERSION ?= 0.42.0
+PIP_VERSION ?= 24.0
 MAX_COMPLEXITY ?= 7
 INTERFACE ?= localhost
 RUNSERVER_PORT ?= 8000
@@ -34,7 +34,7 @@ $(PY_SENTINAL):
 	$(PIP) install pip==$(PIP_VERSION)
 	$(PIP) install --upgrade setuptools
 	$(PIP) install wheel==$(WHEEL_VERSION)
-	$(PIP) install --no-deps --requirement $(REQUIREMENTS) --no-binary cryptography
+	$(PIP) install --no-deps --requirement $(REQUIREMENTS)
 	$(PIP) install "$(DJANGO)"
 	touch $@
 

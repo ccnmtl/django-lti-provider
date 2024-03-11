@@ -1,8 +1,11 @@
-1.0.0
+1.1.0
+==================
+* Add LTI 1.3 support
+
+1.0.0 (2023-10-26)
 ==================
 * Django 3 compatability
 * No longer testing against Django 2.2
-
 
 0.4.7
 ==================

@@ -115,9 +115,9 @@ class LTIViewTest(TestCase):
         request = generate_lti_request()
 
         response = LTIRoutingView().dispatch(request)
-        self.assertEquals(response.status_code, 302)
+        self.assertEqual(response.status_code, 302)
 
-        self.assertEquals(response.url, reverse('lti-fail-auth'))
+        self.assertEqual(response.url, reverse('lti-fail-auth'))
         self.assertFalse(request.session.get(LTI_SESSION_KEY, False))
 
     def test_launch_invalid_course(self):
@@ -127,8 +127,8 @@ class LTIViewTest(TestCase):
             request = generate_lti_request()
 
             response = LTIRoutingView().dispatch(request)
-            self.assertEquals(response.status_code, 302)
-            self.assertEquals(response.url, reverse('lti-course-config'))
+            self.assertEqual(response.status_code, 302)
+            self.assertEqual(response.url, reverse('lti-course-config'))
             self.assertTrue(request.session.get(LTI_SESSION_KEY, False))
 
     def test_launch(self):
@@ -143,17 +143,17 @@ class LTIViewTest(TestCase):
             view.request = request
 
             response = view.dispatch(request)
-            self.assertEquals(response.status_code, 302)
+            self.assertEqual(response.status_code, 302)
 
             landing = 'http://testserver/?lti_version=LTI-1p0&'
-            self.assertEquals(
+            self.assertEqual(
                 response.url, landing.format(ctx.lms_course_context))
 
             self.assertIsNotNone(request.session[LTI_SESSION_KEY])
             user = request.user
             self.assertFalse(user.has_usable_password())
-            self.assertEquals(user.email, 'foo@bar.com')
-            self.assertEquals(user.get_full_name(), 'Foo Baz')
+            self.assertEqual(user.email, 'foo@bar.com')
+            self.assertEqual(user.get_full_name(), 'Foo Baz')
             self.assertTrue(user in ctx.group.user_set.all())
             self.assertTrue(user in ctx.faculty_group.user_set.all())
 
@@ -170,7 +170,7 @@ class LTIViewTest(TestCase):
 
             response = view.dispatch(request)
             landing = 'http://testserver/lti/landing/{}/?lti_version=LTI-1p0&'
-            self.assertEquals(response.status_code, 302)
+            self.assertEqual(response.status_code, 302)
             self.assertTrue(
                 response.url,
                 landing.format(ctx.lms_course_context))
@@ -178,8 +178,8 @@ class LTIViewTest(TestCase):
             self.assertIsNotNone(request.session[LTI_SESSION_KEY])
             user = request.user
             self.assertFalse(user.has_usable_password())
-            self.assertEquals(user.email, 'foo@bar.com')
-            self.assertEquals(user.get_full_name(), 'Foo Baz')
+            self.assertEqual(user.email, 'foo@bar.com')
+            self.assertEqual(user.get_full_name(), 'Foo Baz')
             self.assertTrue(user in ctx.group.user_set.all())
             self.assertTrue(user in ctx.faculty_group.user_set.all())
 
@@ -194,8 +194,8 @@ class LTIViewTest(TestCase):
             view.request = request
 
             response = view.dispatch(request)
-            self.assertEquals(response.status_code, 302)
-            self.assertEquals(
+            self.assertEqual(response.status_code, 302)
+            self.assertEqual(
                 response.url,
                 'http://testserver/asset/embed/?return_url=/asset/'
                 '&lti_version=LTI-1p0&')
@@ -203,8 +203,8 @@ class LTIViewTest(TestCase):
             self.assertIsNotNone(request.session[LTI_SESSION_KEY])
             user = request.user
             self.assertFalse(user.has_usable_password())
-            self.assertEquals(user.email, 'foo@bar.com')
-            self.assertEquals(user.get_full_name(), 'Foo Baz')
+            self.assertEqual(user.email, 'foo@bar.com')
+            self.assertEqual(user.get_full_name(), 'Foo Baz')
             self.assertTrue(user in ctx.group.user_set.all())
             self.assertTrue(user in ctx.faculty_group.user_set.all())
 

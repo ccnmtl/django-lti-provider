@@ -22,3 +22,14 @@ importlib-metadata<7.1 # for flake8
 entrypoints==0.4
 typing_extensions==4.10.0
 pyparsing==3.1.2
+
+certifi==2024.2.2  # requests
+idna==3.6  # requests
+charset_normalizer==3.3.2  # requests
+urllib3==2.2.1  # requests
+requests==2.31.0  # pylti1p3
+pyjwt==2.8.0  # pylti1p3
+cffi==1.16.0  # cryptography
+cryptography==42.0.5  # jwcrypto
+jwcrypto==1.5.6  # pylti1p3
+pylti1p3==2.0.0
