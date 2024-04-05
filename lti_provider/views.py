@@ -275,11 +275,19 @@ def get_launch_data_storage():
     return DjangoCacheDataStorage()
 
 
-def get_launch_url(request):
+def get_launch_url(request) -> str:
     target_link_uri = request.POST.get(
         'target_link_uri', request.GET.get('target_link_uri'))
+
+    # If this wasn't in the request, this shouldn't be too hard to
+    # find. It's just the launch route.
+    if not target_link_uri:
+        target_link_uri = reverse('lti-launch')
+
+    # If we really can't find this, then fail.
     if not target_link_uri:
         raise Exception('Missing "target_link_uri" param')
+
     return target_link_uri
 
 
