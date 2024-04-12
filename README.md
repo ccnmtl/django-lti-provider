@@ -186,7 +186,7 @@ For more on this setting, [read here](https://docs.djangoproject.com/en/3.1/ref/
 To support multiple assignments:
 
 * Create multiple endpoint views
-* Add the assignment urls to the `LTI_TOOL_CONFIGURATION['assignments'] map
+* Add the assignment urls to the `LTI_TOOL_CONFIGURATION['assignments']` map
 * Add an assignment, using the External Tool option.
    * Canvas: https://community.canvaslms.com/docs/DOC-10384-4152501360
 * Update the URL to be `https://<your domain name>/lti/assignment/<assignment_name>`
