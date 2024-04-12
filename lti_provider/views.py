@@ -305,6 +305,10 @@ def login(request):
 
 @require_POST
 def launch(request):
+    # TODO: make this course context aware - migrate functionality
+    # from LTILandingPage.get_context_data.
+    landing_url = settings.LTI_TOOL_CONFIGURATION['landing_url']
+
     tool_conf = get_tool_conf()
     launch_data_storage = get_launch_data_storage()
     message_launch = ExtendedDjangoMessageLaunch(
@@ -313,6 +317,7 @@ def launch(request):
     pprint.pprint(message_launch_data)
 
     return render(request, 'lti_provider/landing_page.html', {
+        'landing_url': landing_url,
         'page_title': 'Page Title',
         'is_deep_link_launch': message_launch.is_deep_link_launch(),
         'launch_data': message_launch.get_launch_data(),

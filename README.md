@@ -51,7 +51,7 @@ Add to ```INSTALLED_APPS``` in your ```settings.py```::
 
 ### Basic setup steps
 
-Add the URL route::
+Add the URL route:
 
 ```python
 path('lti/', include('lti_provider.urls'))
@@ -70,7 +70,7 @@ AUTHENTICATION_BACKENDS = [
 Complete a migration
 
 ```python
-   ./manage.py migrate
+./manage.py migrate
 ```
 
 ### Primary LTI config
