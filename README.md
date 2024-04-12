@@ -54,7 +54,7 @@ Add to ```INSTALLED_APPS``` in your ```settings.py```::
 Add the URL route::
 
 ```python
-url(r'^lti/', include('lti_provider.urls'))
+path('lti/', include('lti_provider.urls'))
 
 ```
 
