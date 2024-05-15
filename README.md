@@ -11,6 +11,10 @@ the [Python LTI library, PyLTI](https://github.com/mitodl/pylti).
 Additional work was completed to provide fuller functionality and support the idiosyncrasies of various LMS systems
 such as Canvas, Blackboard, Moodle and EdEx.
 
+[LTI 1.3](https://www.imsglobal.org/spec/lti/v1p3) support is
+currently in progress, using the
+[PyLTI1p3](https://pypi.org/project/PyLTI1p3/) library.
+
 django-lti-provider offers:
 
 * an authentication backend to complete an oAuth handshake (optional)
