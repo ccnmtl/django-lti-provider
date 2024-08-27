@@ -114,7 +114,7 @@ applications `settings.py` to make use of cookies:
 
 ```python
 SESSION_ENGINE = "django.contrib.sessions.backends.signed_cookies"
-SESSION_COOKIE_SAMESITE = None
+SESSION_COOKIE_SAMESITE = 'None'
 SESSION_COOKIE_SECURE = True
 ```
 
