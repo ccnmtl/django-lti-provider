@@ -42,15 +42,6 @@ Add to ```INSTALLED_APPS``` in your ```settings.py```::
   'lti_provider',
 ```
 
-## Dependencies
-
-* Django
-* nameparser
-* httplib2
-* oauth2
-* oauthlib
-* pylti
-
 ## Configuration
 
 ### Basic setup steps
