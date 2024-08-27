@@ -1,4 +1,4 @@
-# Copyright (c) 2007-2016, Columbia Center For New Media Teaching And Learning (CCNMTL)
+# Copyright (c) 2007-2024, Columbia University Center for Teaching And Learning (CTL)
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
