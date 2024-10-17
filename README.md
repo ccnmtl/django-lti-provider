@@ -14,7 +14,7 @@ such as Canvas, Blackboard, Moodle and EdEx.
 [LTI 1.3](https://www.imsglobal.org/spec/lti/v1p3) support is
 currently in progress, using the
 [PyLTI1p3](https://pypi.org/project/PyLTI1p3/) library. See
-the [django-lti](https://pypi.org/project/django-lti/) for LTI 1.3
+[django-lti](https://pypi.org/project/django-lti/) for LTI 1.3
 support.
 
 django-lti-provider offers:
