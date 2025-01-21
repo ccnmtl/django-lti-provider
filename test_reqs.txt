@@ -18,7 +18,7 @@ pyflakes==3.2.0
 pytz==2024.2
 configparser==7.1.0
 zipp==3.21.0
-importlib-metadata<8.6 # for flake8
+importlib-metadata<8.7 # for flake8
 entrypoints==0.4
 typing_extensions==4.12.2
 pyparsing==3.2.1
