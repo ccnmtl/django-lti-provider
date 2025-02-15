@@ -1,5 +1,11 @@
 [![Actions Status](https://github.com/ccnmtl/django-lti-provider/workflows/build-and-test/badge.svg)](https://github.com/ccnmtl/django-lti-provider/actions)
 
+django-lti-provider **only supports LTI 1.1**, which is now deprecated. For
+[LTI 1.3](https://www.imsglobal.org/spec/lti/v1p3) support, see:
+* [PyLTI1p3](https://pypi.org/project/PyLTI1p3/)
+* [django-lti](https://pypi.org/project/django-lti/)
+* [Mediathread's LTI documentation](https://github.com/ccnmtl/mediathread/tree/master/lti_auth#readme) may also be helpful.
+
 # Documentation
 
 django-lti-provider provides [Learning Tools Interoperability](https://en.wikipedia.org/wiki/Learning_Tools_Interoperability)
@@ -10,12 +16,6 @@ the [Python LTI library, PyLTI](https://github.com/mitodl/pylti).
 
 Additional work was completed to provide fuller functionality and support the idiosyncrasies of various LMS systems
 such as Canvas, Blackboard, Moodle and EdEx.
-
-[LTI 1.3](https://www.imsglobal.org/spec/lti/v1p3) support is
-currently in progress, using the
-[PyLTI1p3](https://pypi.org/project/PyLTI1p3/) library. See
-[django-lti](https://pypi.org/project/django-lti/) for LTI 1.3
-support.
 
 django-lti-provider offers:
 
