@@ -30,6 +30,6 @@ urllib3==2.3.0  # requests
 requests==2.32.3  # pylti1p3
 pyjwt==2.10.1  # pylti1p3
 cffi==1.17.1  # cryptography
-cryptography==44.0.1  # jwcrypto
+cryptography==44.0.2  # jwcrypto
 jwcrypto==1.5.6  # pylti1p3
 pylti1p3==2.0.0
