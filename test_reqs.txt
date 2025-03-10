@@ -16,7 +16,7 @@ flake8==7.1.2
 pep8==1.7.1
 pyflakes==3.2.0
 pytz==2025.1
-configparser==7.1.0
+configparser==7.2.0
 zipp==3.21.0
 importlib-metadata<8.7 # for flake8
 entrypoints==0.4
