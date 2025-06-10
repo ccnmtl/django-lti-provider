@@ -27,7 +27,7 @@ certifi==2025.4.26  # requests
 idna==3.10  # requests
 charset_normalizer==3.4.2  # requests
 urllib3==2.4.0  # requests
-requests==2.32.3  # pylti1p3
+requests==2.32.4  # pylti1p3
 pyjwt==2.10.1  # pylti1p3
 cffi==1.17.1  # cryptography
 cryptography==45.0.3  # jwcrypto
