@@ -14,7 +14,7 @@ mccabe==0.7.0
 pycodestyle==2.14.0
 flake8==7.2.0
 pep8==1.7.1
-pyflakes==3.3.2
+pyflakes==3.4.0
 pytz==2025.2
 configparser==7.2.0
 zipp==3.23.0
