@@ -11,7 +11,7 @@ faker==37.4.0
 factory-boy==3.3.3
 coverage==7.9.1
 mccabe==0.7.0
-pycodestyle==2.13.0
+pycodestyle==2.14.0
 flake8==7.2.0
 pep8==1.7.1
 pyflakes==3.3.2
