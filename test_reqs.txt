@@ -26,7 +26,7 @@ pyparsing==3.2.3
 certifi==2025.6.15  # requests
 idna==3.10  # requests
 charset_normalizer==3.4.2  # requests
-urllib3==2.4.0  # requests
+urllib3==2.5.0  # requests
 requests==2.32.4  # pylti1p3
 pyjwt==2.10.1  # pylti1p3
 cffi==1.17.1  # cryptography
