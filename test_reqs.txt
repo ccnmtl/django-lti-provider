@@ -23,7 +23,7 @@ entrypoints==0.4
 typing_extensions==4.15.0
 pyparsing==3.2.5
 
-certifi==2025.8.3  # requests
+certifi==2025.10.5  # requests
 idna==3.10  # requests
 charset_normalizer==3.4.3  # requests
 urllib3==2.5.0  # requests
