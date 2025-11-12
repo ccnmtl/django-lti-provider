@@ -9,7 +9,7 @@ python-dateutil==2.9.0.post0
 text-unidecode==1.3  # for faker
 faker==38.0.0
 factory-boy==3.3.3
-coverage==7.11.0
+coverage==7.11.3
 mccabe==0.7.0
 pycodestyle==2.14.0
 flake8==7.3.0
