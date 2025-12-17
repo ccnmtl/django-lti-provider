@@ -27,7 +27,7 @@ from setuptools import setup
 
 setup(
     name="django-lti-provider",
-    version="1.0.0",
+    version="1.1.0",
     author="Susan Dreher",
     author_email="ctl-dev@columbia.edu",
     url="https://github.com/ccnmtl/django-lti-provider",
