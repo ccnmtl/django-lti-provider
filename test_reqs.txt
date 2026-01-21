@@ -20,7 +20,7 @@ zipp==3.23.0
 importlib-metadata<8.8 # for flake8
 entrypoints==0.4
 typing_extensions==4.15.0
-pyparsing==3.3.1
+pyparsing==3.3.2
 
 certifi==2026.1.4  # requests
 idna==3.11  # requests
