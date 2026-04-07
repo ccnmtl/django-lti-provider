@@ -30,5 +30,5 @@ requests==2.33.1  # pylti1p3
 pyjwt==2.12.1  # pylti1p3
 cffi==2.0.0  # cryptography
 cryptography==46.0.6  # jwcrypto
-jwcrypto==1.5.6  # pylti1p3
+jwcrypto==1.5.7  # pylti1p3
 pylti1p3==2.0.0
