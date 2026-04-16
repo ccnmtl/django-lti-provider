@@ -1,6 +1,7 @@
 1.1.1
 ==================
 * Add django 5.2 test fix.
+* Remove dependency on oauth2
 
 1.1.0 (2025-12-17)
 ==================
