@@ -3,7 +3,7 @@
 django-lti-provider **only supports LTI 1.1**, which is now deprecated. For
 [LTI 1.3](https://www.imsglobal.org/spec/lti/v1p3) support, see:
 * [django-lti](https://pypi.org/project/django-lti/)
-* [pylti1p3next](https://pypi.org/project/PyLTI1p3/](https://pypi.org/project/pylti1p3next/)
+* [pylti1p3next](https://pypi.org/project/pylti1p3next/)
 * [Mediathread's LTI documentation](https://github.com/ccnmtl/mediathread/tree/master/lti_auth#readme) may also be helpful.
 
 # Documentation
