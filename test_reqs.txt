@@ -23,7 +23,7 @@ typing_extensions==4.15.0
 pyparsing==3.3.2
 
 certifi==2026.5.20  # requests
-idna==3.16  # requests
+idna==3.17  # requests
 charset_normalizer==3.4.7  # requests
 urllib3==2.7.0  # requests
 requests==2.34.2  # pylti1p3
