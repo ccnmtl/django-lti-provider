@@ -12,7 +12,7 @@ class LTITest(TestCase):
     def setUp(self):
         self.request = RequestFactory()
         self.request.COOKIES = {}
-        middleware = SessionMiddleware()
+        middleware = SessionMiddleware(lambda request: None)
         middleware.process_request(self.request)
         self.request.session.save()
 
@@ -23,7 +23,7 @@ class LTITest(TestCase):
 
         self.emptyRequest = RequestFactory()
         self.emptyRequest.COOKIES = {}
-        middleware = SessionMiddleware()
+        middleware = SessionMiddleware(lambda request: None)
         middleware.process_request(self.emptyRequest)
         self.emptyRequest.session.save()
 

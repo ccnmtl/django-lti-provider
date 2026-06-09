@@ -1,8 +1,8 @@
 from __future__ import unicode_literals
 
-from django.conf.urls import include, url
+from django.urls import include, path
 
 
 urlpatterns = [
-    url(r'^lti/', include('lti_provider.urls'))
+    path('lti/', include('lti_provider.urls'))
 ]
