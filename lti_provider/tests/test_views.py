@@ -32,7 +32,7 @@ class LTIViewTest(TestCase):
     def setUp(self):
         self.request = RequestFactory()
         self.request.COOKIES = {}
-        middleware = SessionMiddleware()
+        middleware = SessionMiddleware(lambda request: None)
         middleware.process_request(self.request)
         self.request.session.save()
 
