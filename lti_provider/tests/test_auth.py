@@ -27,7 +27,7 @@ class LTIBackendTest(TestCase):
         user = self.backend.create_user(self.request, self.lti, '12345')
         self.assertFalse(user.has_usable_password())
         self.assertEqual(user.email, 'foo@bar.com')
-        self.assertEqual(user.get_full_name(), 'Foo Baz')
+        self.assertEqual(user.get_full_name(), 'Foo Bar Baz')
 
     def test_create_user_no_full_name(self):
         self.request.session.pop('lis_person_name_full')
@@ -76,7 +76,7 @@ class LTIBackendTest(TestCase):
         user = self.backend.find_or_create_user(self.request, self.lti)
         self.assertFalse(user.has_usable_password())
         self.assertEqual(user.email, 'foo@bar.com')
-        self.assertEqual(user.get_full_name(), 'Foo Baz')
+        self.assertEqual(user.get_full_name(), 'Foo Bar Baz')
 
         username = self.backend.get_hashed_username(self.request, self.lti)
         self.assertEqual(user.username, username)

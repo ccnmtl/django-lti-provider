@@ -153,7 +153,7 @@ class LTIViewTest(TestCase):
             user = request.user
             self.assertFalse(user.has_usable_password())
             self.assertEqual(user.email, 'foo@bar.com')
-            self.assertEqual(user.get_full_name(), 'Foo Baz')
+            self.assertEqual(user.get_full_name(), 'Foo Bar Baz')
             self.assertTrue(user in ctx.group.user_set.all())
             self.assertTrue(user in ctx.faculty_group.user_set.all())
 
@@ -179,7 +179,7 @@ class LTIViewTest(TestCase):
             user = request.user
             self.assertFalse(user.has_usable_password())
             self.assertEqual(user.email, 'foo@bar.com')
-            self.assertEqual(user.get_full_name(), 'Foo Baz')
+            self.assertEqual(user.get_full_name(), 'Foo Bar Baz')
             self.assertTrue(user in ctx.group.user_set.all())
             self.assertTrue(user in ctx.faculty_group.user_set.all())
 
@@ -204,7 +204,7 @@ class LTIViewTest(TestCase):
             user = request.user
             self.assertFalse(user.has_usable_password())
             self.assertEqual(user.email, 'foo@bar.com')
-            self.assertEqual(user.get_full_name(), 'Foo Baz')
+            self.assertEqual(user.get_full_name(), 'Foo Bar Baz')
             self.assertTrue(user in ctx.group.user_set.all())
             self.assertTrue(user in ctx.faculty_group.user_set.all())
 
