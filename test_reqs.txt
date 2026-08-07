@@ -28,7 +28,7 @@ charset_normalizer==3.4.9  # requests
 urllib3==2.7.0  # requests
 requests==2.34.2  # pylti1p3
 pyjwt==2.13.0  # pylti1p3
-cffi==2.1.0  # cryptography
+cffi==2.1.1  # cryptography
 cryptography==50.0.0  # jwcrypto
 jwcrypto==1.5.8  # pylti1p3
 pylti1p3==2.0.0
