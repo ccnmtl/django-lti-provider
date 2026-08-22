@@ -1,7 +1,8 @@
 [![Actions Status](https://github.com/ccnmtl/django-lti-provider/workflows/build-and-test/badge.svg)](https://github.com/ccnmtl/django-lti-provider/actions)
 
-django-lti-provider **only supports LTI 1.1**, which is now deprecated. For
-[LTI 1.3](https://www.imsglobal.org/spec/lti/v1p3) support, see:
+django-lti-provider **only supports LTI 1.1**, which is now deprecated. This library
+itself is deprecated as well. For [LTI 1.3](https://www.imsglobal.org/spec/lti/v1p3) support in Django
+going forward, please use:
 * [django-lti](https://pypi.org/project/django-lti/)
 * [pylti1p3next](https://pypi.org/project/pylti1p3next/)
 * [Mediathread's LTI documentation](https://github.com/ccnmtl/mediathread/tree/master/lti_auth#readme) may also be helpful.
