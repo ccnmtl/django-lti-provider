@@ -11,7 +11,7 @@ faker==40.39.0
 factory-boy==3.3.3
 mccabe==0.7.0
 pycodestyle==2.14.0
-flake8==7.3.0
+flake8==7.4.1
 pep8==1.7.1
 pyflakes==3.4.0
 pytz==2026.3.post1
