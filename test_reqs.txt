@@ -14,7 +14,7 @@ pycodestyle==2.15.0
 flake8==7.5.0
 pep8==1.7.1
 pyflakes==4.1.0
-pytz==2026.5
+pytz==2026.6
 configparser==7.3.0
 zipp==4.1.2
 importlib-metadata<10.2 # for flake8
